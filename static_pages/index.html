@@ -1,58 +1,381 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <link rel="stylesheet" href="css/style.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>InternEasy - Trouvez votre stage</title>
-    <!-- Bootstrap -->
+    <title>InternEasy • Plateforme de stages pour étudiants</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        .navbar { background: #2c3e50; }
-        .hero { background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); }
-        .btn-primary { background: #2c3e50; border-color: #2c3e50; }
+        .hero-section {
+            min-height: 90vh;
+            background: linear-gradient(135deg, rgba(248, 250, 252, 0.95) 0%, rgba(241, 245, 249, 0.9) 100%), url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+            padding-top: 5rem;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-primary);
+            opacity: 0.05;
+        }
+        
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--gray);
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+        
+        .btn-hero-primary {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 1rem 2rem;
+            font-weight: 600;
+            border-radius: var(--border-radius);
+            border: none;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-hero-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(37, 99, 235, 0.3);
+        }
+        
+        .btn-hero-secondary {
+            background: white;
+            color: var(--primary);
+            padding: 1rem 2rem;
+            font-weight: 600;
+            border-radius: var(--border-radius);
+            border: 2px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-hero-secondary:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: block;
+            line-height: 1;
+        }
+        
+        .stat-label {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+        
+        .features-section {
+            padding: 6rem 0;
+            background: white;
+        }
+        
+        .feature-card {
+            text-align: center;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: white;
+            font-size: 2rem;
+        }
+        
+        .feature-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        
+        .feature-description {
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+        
+        .how-it-works {
+            padding: 6rem 0;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        }
+        
+        .step-card {
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            background: white;
+            position: relative;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+        }
+        
+        .step-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .step-number {
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+        
+        .cta-section {
+            padding: 6rem 0;
+            background: var(--gradient-primary);
+            color: white;
+            text-align: center;
+        }
+        
+        .cta-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+        
+        .cta-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .btn-cta {
+            background: white;
+            color: var(--primary);
+            padding: 1rem 3rem;
+            font-weight: 600;
+            border-radius: var(--border-radius);
+            border: none;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(255, 255, 255, 0.2);
+        }
+        
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 4rem 0 2rem;
+        }
+        
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-link {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-link:hover {
+            color: white;
+        }
+        
+        .footer-copyright {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+            }
+            
+            .btn-hero-primary,
+            .btn-hero-secondary {
+                width: 100%;
+                text-align: center;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
+    <nav class="navbar">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="#">InternEasy</a>
-            <div class="navbar-nav ms-auto">
-                <a class="nav-link" href="login.html">Connexion</a>
-                <a class="nav-link" href="register.html">Inscription</a>
+            <div class="d-flex justify-content-between align-items-center w-100">
+                <a class="navbar-brand" href="#">InternEasy</a>
+                <div class="d-flex gap-3">
+                    <a href="login.html" class="btn btn-outline-primary">Connexion</a>
+                    <a href="register.html" class="btn btn-primary">Inscription</a>
+                </div>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="hero py-5">
-        <div class="container py-5">
+    <section class="hero-section">
+        <div class="container">
             <div class="row align-items-center">
-                <div class="col-md-6">
-                    <h1 class="display-4 fw-bold mb-4">
-                        Votre stage commence <span class="text-primary">ici</span>
+                <div class="col-lg-7">
+                    <h1 class="hero-title">
+                        Votre future carrière
+                        <span style="display: block; background: var(--gradient-primary); -webkit-background-clip: text; background-clip: text; color: transparent;">
+                            commence ici
+                        </span>
                     </h1>
-                    <p class="lead mb-4">
-                        La plateforme qui connecte les étudiants marocains aux meilleures opportunités de stage.
-                        Simple, rapide, efficace.
+                    <p class="hero-subtitle">
+                        InternEasy connecte les étudiants marocains aux meilleures opportunités de stage. 
+                        Des centaines d'entreprises recherchent des talents comme vous.
                     </p>
-                    <div class="d-flex gap-3">
-                        <a href="register.html?type=student" class="btn btn-primary btn-lg px-4">
-                            🎓 Je cherche un stage
+                    
+                    <div class="hero-buttons">
+                        <a href="register.html?type=student" class="btn-hero-primary">
+                            Trouver un stage
                         </a>
-                        <a href="register.html?type=company" class="btn btn-outline-primary btn-lg px-4">
-                            🏢 Je recrute un stagiaire
+                        <a href="register.html?type=company" class="btn-hero-secondary">
+                            Proposer un stage
                         </a>
                     </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-number">500+</span>
+                            <span class="stat-label">Stages disponibles</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">200+</span>
+                            <span class="stat-label">Entreprises</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">1500+</span>
+                            <span class="stat-label">Étudiants</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">24h</span>
+                            <span class="stat-label">Réponse moyenne</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="card shadow">
-                        <div class="card-body text-center p-5">
-                            <div class="display-1 mb-3">📊</div>
-                            <h3>+500 stages disponibles</h3>
-                            <p class="text-muted">Dans toute le Maroc</p>
+                
+                <div class="col-lg-5">
+                    <div class="card" style="border: none; box-shadow: var(--shadow-xl); border-radius: var(--border-radius-lg); overflow: hidden;">
+                        <div class="card-body p-0">
+                            <div style="background: var(--gradient-primary); padding: 2rem; color: white;">
+                                <h4 class="mb-3">Opportunités du moment</h4>
+                                <div class="d-flex flex-column gap-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span>Développeur Full Stack</span>
+                                        <span class="badge bg-white text-primary">Nouveau</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span>Data Analyst</span>
+                                        <span class="badge bg-white text-primary">Urgent</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span>UX/UI Designer</span>
+                                        <span class="badge bg-white text-primary">Remote</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <p class="text-muted mb-3">Rejoignez la communauté et accédez à toutes les opportunités</p>
+                                <a href="register.html" class="btn btn-primary w-100">
+                                    Créer un compte gratuit
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -60,15 +383,130 @@
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-dark text-white py-4">
-        <div class="container text-center">
-            <p class="mb-0">© 2024 InternEasy - Plateforme de stages pour étudiants</p>
+    <section class="features-section">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="mb-3">Pourquoi choisir InternEasy ?</h2>
+                <p class="text-muted">La plateforme la plus complète pour trouver votre stage idéal</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-search"></i>
+                        </div>
+                        <h4 class="feature-title">Recherche intelligente</h4>
+                        <p class="feature-description">
+                            Filtrez les offres par ville, domaine, durée et type de stage. 
+                            Notre algorithme vous suggère les meilleures opportunités.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-file-earmark-text"></i>
+                        </div>
+                        <h4 class="feature-title">CV intelligent</h4>
+                        <p class="feature-description">
+                            Créez un CV professionnel en quelques clics. 
+                            Notre générateur s'adapte à chaque offre d'emploi.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-map"></i>
+                        </div>
+                        <h4 class="feature-title">Carte interactive</h4>
+                        <p class="feature-description">
+                            Visualisez les opportunités sur une carte interactive. 
+                            Trouvez des stages près de chez vous ou en télétravail.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="how-it-works">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="mb-3">Comment ça marche ?</h2>
+                <p class="text-muted">Trois étapes simples pour trouver votre stage</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <h4 class="mb-3">Créez votre profil</h4>
+                        <p class="text-muted">
+                            Inscrivez-vous en tant qu'étudiant ou entreprise. 
+                            Complétez votre profil avec vos compétences et expériences.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <h4 class="mb-3">Trouvez ou proposez</h4>
+                        <p class="text-muted">
+                            Recherchez des stages correspondant à votre profil, 
+                            ou publiez vos offres si vous êtes une entreprise.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <h4 class="mb-3">Connectez-vous</h4>
+                        <p class="text-muted">
+                            Postulez en un clic ou recevez des candidatures. 
+                            Suivez l'évolution de vos candidatures en temps réel.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <h2 class="cta-title">Prêt à commencer votre aventure ?</h2>
+            <p class="cta-subtitle">
+                Rejoignez des milliers d'étudiants et d'entreprises qui ont déjà trouvé 
+                leur match parfait sur InternEasy.
+            </p>
+            <a href="register.html" class="btn-cta">
+                Commencer maintenant
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="#" class="footer-link">À propos</a>
+                <a href="#" class="footer-link">Contact</a>
+                <a href="#" class="footer-link">Mentions légales</a>
+                <a href="#" class="footer-link">Confidentialité</a>
+                <a href="#" class="footer-link">Conditions</a>
+            </div>
+            
+            <div class="footer-copyright">
+                <p class="mb-0">© 2024 InternEasy. Tous droits réservés.</p>
+                <p class="mb-0">Plateforme de stages pour étudiants marocains</p>
+            </div>
         </div>
     </footer>
 
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="js/main.js"></script>
 </body>
 </html>

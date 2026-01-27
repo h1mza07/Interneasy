@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publier une offre • InternEasy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .post-offer-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .form-header {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            color: white;
+            border-radius: var(--border-radius-lg);
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .form-card {
+            background: white;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-lg);
+            padding: 3rem;
+        }
+        
+        .form-section {
+            margin-bottom: 3rem;
+            padding-bottom: 3rem;
+            border-bottom: 2px solid #f1f5f9;
+        }
+        
+        .form-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .section-title {
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--primary-light);
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        
+        .form-control, .form-select {
+            width: 100%;
+        }
+        
+        .rich-text-editor {
+            border: 2px solid #e2e8f0;
+            border-radius: var(--border-radius);
+            min-height: 200px;
+            padding: 1rem;
+        }
+        
+        .requirement-input {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .requirement-input input {
+            flex: 1;
+        }
+        
+        .requirements-list {
+            margin-top: 1rem;
+        }
+        
+        .requirement-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            background: #f8fafc;
+            border-radius: var(--border-radius);
+            margin-bottom: 0.5rem;
+        }
+        
+        .preview-card {
+            background: white;
+            border: 2px dashed #cbd5e1;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .preview-card:hover {
+            border-color: var(--primary);
+            background: #f8fafc;
+        }
+        
+        .preview-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            margin: 0 auto 1rem;
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 2px solid #f1f5f9;
+        }
+        
+        .btn-draft {
+            background: white;
+            color: var(--gray);
+            border: 2px solid #cbd5e1;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            border-radius: var(--border-radius);
+        }
+        
+        .btn-draft:hover {
+            background: #f8fafc;
+            border-color: var(--gray);
+        }
+        
+        .btn-publish {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 3rem;
+            font-weight: 600;
+            border-radius: var(--border-radius);
+        }
+        
+        .btn-publish:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .post-offer-container {
+                padding: 1rem;
+            }
+            
+            .form-card {
+                padding: 2rem 1.5rem;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .btn-draft, .btn-publish {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="post-offer-container">
+        <a href="dashboard_company.html" class="back-link">
+            <i class="bi bi-arrow-left"></i>
+            Retour au dashboard
+        </a>
+        
+        <div class="form-header">
+            <h1 class="mb-3">Publier une nouvelle offre</h1>
+            <p class="mb-0 opacity-75">Remplissez ce formulaire pour publier votre offre de stage. Les champs marqués d'un * sont obligatoires.</p>
+        </div>
+        
+        <form id="offerForm" class="form-card">
+            <div class="form-section">
+                <h3 class="section-title">Informations générales</h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Titre du poste *</label>
+                        <input type="text" class="form-control" placeholder="Ex: Développeur Full Stack" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Type de contrat *</label>
+                        <select class="form-select" required>
+                            <option value="">Sélectionnez</option>
+                            <option>Stage</option>
+                            <option>Alternance</option>
+                            <option>Stage PFE</option>
+                            <option>Stage été</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Durée *</label>
+                        <select class="form-select" required>
+                            <option value="">Sélectionnez</option>
+                            <option>1-3 mois</option>
+                            <option>3-6 mois</option>
+                            <option>6 mois</option>
+                            <option>6-12 mois</option>
+                            <option>12 mois</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Date de début *</label>
+                        <input type="date" class="form-control" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Description du poste *</label>
+                    <div class="rich-text-editor" contenteditable="true">
+                        Décrivez les missions principales, les responsabilités et les objectifs du poste...
+                    </div>
+                    <small class="text-muted">Minimum 200 caractères</small>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3 class="section-title">Détails pratiques</h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Localisation *</label>
+                        <select class="form-select" required>
+                            <option value="">Sélectionnez une ville</option>
+                            <option>Casablanca</option>
+                            <option>Rabat</option>
+                            <option>Marrakech</option>
+                            <option>Tanger</option>
+                            <option>Fès</option>
+                            <option>Agadir</option>
+                            <option>Remote (Télétravail)</option>
+                            <option>Hybride</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Rémunération (MAD/mois)</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" placeholder="Montant">
+                            <span class="input-group-text">MAD</span>
+                        </div>
+                        <small class="text-muted">Laisser vide si non rémunéré</small>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Domaine *</label>
+                        <select class="form-select" required>
+                            <option value="">Sélectionnez</option>
+                            <option>Informatique & Tech</option>
+                            <option>Marketing & Communication</option>
+                            <option>Finance & Comptabilité</option>
+                            <option>Ressources Humaines</option>
+                            <option>Commerce & Vente</option>
+                            <option>Ingénierie</option>
+                            <option>Santé</option>
+                            <option>Éducation</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nombre de postes *</label>
+                        <input type="number" class="form-control" value="1" min="1" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Date limite de candidature *</label>
+                    <input type="date" class="form-control" required>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3 class="section-title">Profil recherché</h3>
+                
+                <div class="form-group">
+                    <label class="form-label">Niveau d'études requis *</label>
+                    <select class="form-select" required>
+                        <option value="">Sélectionnez</option>
+                        <option>BAC+2</option>
+                        <option>BAC+3</option>
+                        <option>BAC+4</option>
+                        <option>BAC+5</option>
+                        <option>BAC+6 et plus</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Compétences requises</label>
+                    <div class="requirement-input">
+                        <input type="text" class="form-control" placeholder="Ajouter une compétence" id="skillInput">
+                        <button type="button" class="btn btn-primary" onclick="addSkill()">Ajouter</button>
+                    </div>
+                    <div class="requirements-list" id="skillsList">
+                        <!-- Compétences ajoutées dynamiquement -->
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Avantages offerts</label>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox">
+                                <label class="form-check-label">Tickets restaurant</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox">
+                                <label class="form-check-label">Mutuelle santé</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox">
+                                <label class="form-check-label">Formations</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox">
+                                <label class="form-check-label">Prime de transport</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox">
+                                <label class="form-check-label">Équipement fourni</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox">
+                                <label class="form-check-label">Possibilité CDI</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3 class="section-title">Aperçu</h3>
+                
+                <div class="preview-card">
+                    <div class="preview-icon">
+                        <i class="bi bi-eye"></i>
+                    </div>
+                    <h5 class="mb-2">Aperçu de votre offre</h5>
+                    <p class="text-muted mb-3">Votre offre sera visible par des milliers d'étudiants</p>
+                    <button type="button" class="btn btn-outline-primary" onclick="previewOffer()">
+                        Voir l'aperçu
+                    </button>
+                </div>
+            </div>
+            
+            <div class="form-actions">
+                <button type="button" class="btn-draft">
+                    Enregistrer comme brouillon
+                </button>
+                <button type="submit" class="btn-publish">
+                    Publier l'offre
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let skills = [];
+        
+        function addSkill() {
+            const input = document.getElementById('skillInput');
+            const skill = input.value.trim();
+            
+            if (skill && !skills.includes(skill)) {
+                skills.push(skill);
+                updateSkillsList();
+                input.value = '';
+            }
+        }
+        
+        function updateSkillsList() {
+            const list = document.getElementById('skillsList');
+            list.innerHTML = '';
+            
+            skills.forEach((skill, index) => {
+                const item = document.createElement('div');
+                item.className = 'requirement-item';
+                item.innerHTML = `
+                    <span>${skill}</span>
+                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeSkill(${index})">
+                        <i class="bi bi-x"></i>
+                    </button>
+                `;
+                list.appendChild(item);
+            });
+        }
+        
+        function removeSkill(index) {
+            skills.splice(index, 1);
+            updateSkillsList();
+        }
+        
+        function previewOffer() {
+            alert('Cette fonctionnalité afficherait un aperçu complet de l\'offre');
+        }
+        
+        document.getElementById('offerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Offre publiée avec succès ! Elle sera visible après validation.');
+            window.location.href = 'dashboard_company.html';
+        });
+    </script>
+</body>
+</html>

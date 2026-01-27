@@ -1,51 +1,300 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <link rel="stylesheet" href="css/style.css">
     <meta charset="UTF-8">
-    <title>InternEasy - Connexion</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion • InternEasy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .login-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        
+        .login-card {
+            background: white;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-xl);
+            width: 100%;
+            max-width: 450px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .login-card:hover {
+            box-shadow: 0 25px 50px rgba(30, 41, 59, 0.15);
+        }
+        
+        .login-header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        
+        .login-header h1 {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .login-body {
+            padding: 2.5rem;
+        }
+        
+        .user-type-selector {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .user-type-btn {
+            flex: 1;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            background: white;
+            border-radius: var(--border-radius);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .user-type-btn:hover {
+            border-color: var(--primary-light);
+            background: rgba(96, 165, 250, 0.05);
+        }
+        
+        .user-type-btn.active {
+            border-color: var(--primary);
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+        }
+        
+        .user-type-btn i {
+            font-size: 1.5rem;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        
+        .form-control {
+            width: 100%;
+        }
+        
+        .login-btn {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 1rem;
+            font-weight: 600;
+            border-radius: var(--border-radius);
+            width: 100%;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+        }
+        
+        .divider {
+            text-align: center;
+            margin: 2rem 0;
+            position: relative;
+        }
+        
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e2e8f0;
+        }
+        
+        .divider span {
+            background: white;
+            padding: 0 1rem;
+            color: var(--gray);
+            position: relative;
+        }
+        
+        .login-footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .login-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .login-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+        }
+        
+        .password-container {
+            position: relative;
+        }
+    </style>
 </head>
-<body class="bg-light">
-    <div class="container py-5">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card shadow">
-                    <div class="card-body p-5">
-                        <h2 class="text-center mb-4">Connexion à InternEasy</h2>
-                        
-                        <!-- Choix du type d'utilisateur -->
-                        <div class="d-flex mb-4">
-                            <button class="btn btn-outline-primary flex-fill active" id="btnStudent">
-                                🎓 Étudiant
-                            </button>
-                            <button class="btn btn-outline-primary flex-fill" id="btnCompany">
-                                🏢 Entreprise
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <h1>InternEasy</h1>
+                <p class="mb-0">Connectez-vous à votre espace</p>
+            </div>
+            
+            <div class="login-body">
+                <div class="user-type-selector">
+                    <div class="user-type-btn active" id="btnStudent">
+                        <i class="bi bi-person-circle"></i>
+                        <span>Étudiant</span>
+                    </div>
+                    <div class="user-type-btn" id="btnCompany">
+                        <i class="bi bi-building"></i>
+                        <span>Entreprise</span>
+                    </div>
+                    <div class="user-type-btn" id="btnAdmin">
+                        <i class="bi bi-shield-check"></i>
+                        <span>Admin</span>
+                    </div>
+                </div>
+                
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label class="form-label">Adresse email</label>
+                        <input type="email" class="form-control" placeholder="votre@email.com" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Mot de passe</label>
+                        <div class="password-container">
+                            <input type="password" class="form-control" placeholder="Votre mot de passe" required id="passwordInput">
+                            <button type="button" class="password-toggle" id="togglePassword">
+                                <i class="bi bi-eye"></i>
                             </button>
                         </div>
-                        
-                        <!-- Formulaire -->
-                        <form id="loginForm">
-                            <div class="mb-3">
-                                <label class="form-label">Email</label>
-                                <input type="email" class="form-control" placeholder="votre@email.com" required>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Mot de passe</label>
-                                <input type="password" class="form-control" placeholder="Votre mot de passe" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary w-100">Se connecter</button>
-                        </form>
-                        
-                        <div class="text-center mt-3">
-                            <a href="register.html">Créer un compte</a> | 
-                            <a href="index.html">Retour à l'accueil</a>
+                        <div class="text-end mt-2">
+                            <a href="#" class="text-sm text-muted">Mot de passe oublié ?</a>
                         </div>
                     </div>
+                    
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="rememberMe">
+                            <label class="form-check-label" for="rememberMe">
+                                Se souvenir de moi
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="login-btn">
+                        Se connecter
+                    </button>
+                </form>
+                
+                <div class="divider">
+                    <span>Ou</span>
+                </div>
+                
+                <div class="text-center">
+                    <p class="text-muted">Vous n'avez pas de compte ?</p>
+                    <a href="register.html" class="btn btn-outline-primary">
+                        Créer un compte
+                    </a>
+                </div>
+                
+                <div class="login-footer">
+                    <p class="text-muted mb-2">
+                        <a href="index.html">Retour à l'accueil</a>
+                    </p>
+                    <small class="text-muted">
+                        © 2024 InternEasy • Plateforme de stages pour étudiants
+                    </small>
                 </div>
             </div>
         </div>
     </div>
-    <script src="js/main.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Basculer entre les types d'utilisateurs
+        document.querySelectorAll('.user-type-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.user-type-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+        // Afficher/masquer le mot de passe
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const passwordInput = document.getElementById('passwordInput');
+            const icon = this.querySelector('i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('bi-eye');
+                icon.classList.add('bi-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('bi-eye-slash');
+                icon.classList.add('bi-eye');
+            }
+        });
+        
+        // Gestion du formulaire
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const userType = document.querySelector('.user-type-btn.active span').textContent;
+            
+            // Redirection selon le type d'utilisateur
+            switch(userType) {
+                case 'Étudiant':
+                    window.location.href = 'dashboard_student.html';
+                    break;
+                case 'Entreprise':
+                    window.location.href = 'dashboard_company.html';
+                    break;
+                case 'Admin':
+                    window.location.href = 'dashboard_admin.html';
+                    break;
+            }
+        });
+    </script>
 </body>
 </html>

@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Entreprise • InternEasy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .sidebar {
+            width: 280px;
+            background: var(--gradient-dark);
+            color: white;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: var(--shadow-xl);
+        }
+        
+        .sidebar-brand {
+            padding: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar-nav .nav-link {
+            color: rgba(255, 255, 255, 0.7);
+            padding: 0.85rem 1.2rem;
+            border-radius: var(--border-radius);
+            transition: all 0.3s ease;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            margin: 0.25rem 1rem;
+        }
+        
+        .sidebar-nav .nav-link:hover,
+        .sidebar-nav .nav-link.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .sidebar-nav .nav-link i {
+            width: 24px;
+            margin-right: 12px;
+            font-size: 1.2rem;
+        }
+        
+        .main-content {
+            margin-left: 280px;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        }
+        
+        .navbar-top {
+            background: white;
+            box-shadow: var(--shadow-sm);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .stats-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+        }
+        
+        .stats-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+        
+        .stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .stats-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1;
+        }
+        
+        .offer-table {
+            background: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .offer-table th {
+            background: #f8fafc;
+            color: var(--dark);
+            font-weight: 600;
+            padding: 1rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .offer-table td {
+            padding: 1rem;
+            vertical-align: middle;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .offer-table tr:hover {
+            background: #f8fafc;
+        }
+        
+        .badge-status {
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .badge-active {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+        
+        .badge-pending {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+        
+        .badge-closed {
+            background: rgba(100, 116, 139, 0.1);
+            color: var(--gray);
+        }
+        
+        .btn-action {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.85rem;
+            border-radius: var(--border-radius);
+        }
+        
+        .application-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .application-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+        
+        .notification-dot {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 12px;
+            height: 12px;
+            background: var(--danger);
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+        
+        .nav-tabs .nav-link {
+            border: none;
+            color: var(--gray);
+            font-weight: 500;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+        }
+        
+        .nav-tabs .nav-link.active {
+            color: var(--primary);
+            background: white;
+            border-bottom: 3px solid var(--primary);
+        }
+        
+        .tab-content {
+            background: white;
+            border-radius: 0 var(--border-radius) var(--border-radius) var(--border-radius);
+            box-shadow: var(--shadow-md);
+            padding: 1.5rem;
+        }
+        
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <h2 class="mb-0">InternEasy</h2>
+            <small class="text-white-50">Espace Entreprise</small>
+        </div>
+        
+        <div class="py-4">
+            <div class="text-center mb-4 px-3">
+                <div class="user-avatar mx-auto mb-3">
+                    <i class="bi bi-building"></i>
+                </div>
+                <h5 class="text-white mb-1">TechMaroc SARL</h5>
+                <small class="text-white-50">Technologie • Casablanca</small>
+                <div class="mt-2">
+                    <span class="badge bg-success">Compte vérifié</span>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-link active">
+                    <i class="bi bi-speedometer2"></i>
+                    <span>Tableau de bord</span>
+                </a>
+                <a href="#" class="nav-link">
+                    <i class="bi bi-plus-circle"></i>
+                    <span>Publier une offre</span>
+                </a>
+                <a href="#" class="nav-link">
+                    <i class="bi bi-briefcase"></i>
+                    <span>Mes offres</span>
+                    <span class="badge bg-primary ms-auto">5</span>
+                </a>
+                <a href="#" class="nav-link">
+                    <i class="bi bi-people"></i>
+                    <span>Candidatures</span>
+                    <span class="badge bg-warning ms-auto">12</span>
+                </a>
+                <a href="#" class="nav-link">
+                    <i class="bi bi-gear"></i>
+                    <span>Paramètres</span>
+                </a>
+                <a href="#" class="nav-link">
+                    <i class="bi bi-bar-chart"></i>
+                    <span>Statistiques</span>
+                </a>
+            </nav>
+        </div>
+        
+        <div class="p-4 border-top border-white-10">
+            <button class="btn btn-outline-light w-100">
+                <i class="bi bi-box-arrow-right me-2"></i>
+                Déconnexion
+            </button>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <nav class="navbar-top">
+            <div class="container-fluid">
+                <div class="d-flex justify-content-between align-items-center w-100">
+                    <div class="d-flex align-items-center">
+                        <button class="btn btn-outline-primary d-lg-none me-3" id="sidebarToggle">
+                            <i class="bi bi-list"></i>
+                        </button>
+                        <h4 class="mb-0">Tableau de bord entreprise</h4>
+                    </div>
+                    
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="position-relative">
+                            <button class="btn btn-light position-relative">
+                                <i class="bi bi-bell"></i>
+                                <span class="notification-dot"></span>
+                            </button>
+                        </div>
+                        <div class="dropdown">
+                            <button class="btn btn-link text-dark text-decoration-none dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown">
+                                <div class="user-avatar me-2">
+                                    <i class="bi bi-building"></i>
+                                </div>
+                                <div class="text-start">
+                                    <small class="text-muted d-block">Connecté en tant que</small>
+                                    <strong>Entreprise</strong>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container-fluid py-4">
+            <div class="row g-4 mb-5">
+                <div class="col-xl-3 col-md-6">
+                    <div class="stats-card">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-grow-1">
+                                <h6 class="text-muted mb-2">Offres actives</h6>
+                                <div class="stats-number">5</div>
+                            </div>
+                            <div class="text-primary fs-1">
+                                <i class="bi bi-briefcase"></i>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <small class="text-success"><i class="bi bi-arrow-up"></i> +2 ce mois</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-xl-3 col-md-6">
+                    <div class="stats-card">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-grow-1">
+                                <h6 class="text-muted mb-2">Candidatures totales</h6>
+                                <div class="stats-number">47</div>
+                            </div>
+                            <div class="text-warning fs-1">
+                                <i class="bi bi-people"></i>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <small class="text-muted">+12 cette semaine</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-xl-3 col-md-6">
+                    <div class="stats-card">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-grow-1">
+                                <h6 class="text-muted mb-2">Entretiens programmés</h6>
+                                <div class="stats-number">8</div>
+                            </div>
+                            <div class="text-success fs-1">
+                                <i class="bi bi-calendar-check"></i>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <small class="text-muted">3 cette semaine</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-xl-3 col-md-6">
+                    <div class="stats-card">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-grow-1">
+                                <h6 class="text-muted mb-2">Taux de réponse</h6>
+                                <div class="stats-number">92%</div>
+                            </div>
+                            <div class="text-info fs-1">
+                                <i class="bi bi-graph-up"></i>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <div class="progress" style="height: 5px;">
+                                <div class="progress-bar bg-info" style="width: 92%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-8 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h5 class="mb-0">Mes offres de stage</h5>
+                                <a href="#" class="btn btn-primary">
+                                    <i class="bi bi-plus-circle me-2"></i>
+                                    Nouvelle offre
+                                </a>
+                            </div>
+                            
+                            <div class="table-responsive">
+                                <table class="table offer-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Poste</th>
+                                            <th>Type</th>
+                                            <th>Candidatures</th>
+                                            <th>Statut</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <strong>Développeur Full Stack</strong><br>
+                                                <small class="text-muted">Publié le 15/03/2024</small>
+                                            </td>
+                                            <td>Stage • 6 mois</td>
+                                            <td>
+                                                <span class="badge bg-primary">15</span>
+                                            </td>
+                                            <td>
+                                                <span class="badge-status badge-active">Active</span>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex gap-2">
+                                                    <button class="btn btn-sm btn-outline-primary">
+                                                        <i class="bi bi-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-warning">
+                                                        <i class="bi bi-pencil"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>Data Analyst</strong><br>
+                                                <small class="text-muted">Publié le 10/03/2024</small>
+                                            </td>
+                                            <td>Alternance • 12 mois</td>
+                                            <td>
+                                                <span class="badge bg-primary">22</span>
+                                            </td>
+                                            <td>
+                                                <span class="badge-status badge-active">Active</span>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex gap-2">
+                                                    <button class="btn btn-sm btn-outline-primary">
+                                                        <i class="bi bi-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-warning">
+                                                        <i class="bi bi-pencil"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>UX/UI Designer</strong><br>
+                                                <small class="text-muted">Publié le 05/03/2024</small>
+                                            </td>
+                                            <td>Stage • 3 mois</td>
+                                            <td>
+                                                <span class="badge bg-primary">8</span>
+                                            </td>
+                                            <td>
+                                                <span class="badge-status badge-pending">En attente</span>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex gap-2">
+                                                    <button class="btn btn-sm btn-outline-primary">
+                                                        <i class="bi bi-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-success">
+                                                        <i class="bi bi-check"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>DevOps Engineer</strong><br>
+                                                <small class="text-muted">Publié le 28/02/2024</small>
+                                            </td>
+                                            <td>Stage • 4 mois</td>
+                                            <td>
+                                                <span class="badge bg-secondary">0</span>
+                                            </td>
+                                            <td>
+                                                <span class="badge-status badge-closed">Expirée</span>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex gap-2">
+                                                    <button class="btn btn-sm btn-outline-secondary">
+                                                        <i class="bi bi-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-danger">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="mb-4">Candidatures récentes</h5>
+                            
+                            <div class="d-flex flex-column gap-3">
+                                <div class="application-card">
+                                    <div class="d-flex align-items-start gap-3">
+                                        <div class="user-avatar">
+                                            KH
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-1">Karim Hassan</h6>
+                                            <p class="text-muted mb-2">Développeur Full Stack</p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <small class="text-muted">Il y a 2 heures</small>
+                                                <span class="badge bg-warning">Nouveau</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex gap-2 mt-3">
+                                        <button class="btn btn-sm btn-outline-primary flex-fill">
+                                            <i class="bi bi-eye me-1"></i>Voir CV
+                                        </button>
+                                        <button class="btn btn-sm btn-success flex-fill">
+                                            <i class="bi bi-check me-1"></i>Contacter
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="application-card">
+                                    <div class="d-flex align-items-start gap-3">
+                                        <div class="user-avatar">
+                                            SA
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-1">Sara Ahmed</h6>
+                                            <p class="text-muted mb-2">Data Analyst</p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <small class="text-muted">Il y a 1 jour</small>
+                                                <span class="badge bg-success">Contactée</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex gap-2 mt-3">
+                                        <button class="btn btn-sm btn-outline-primary flex-fill">
+                                            <i class="bi bi-eye me-1"></i>Voir CV
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-success flex-fill">
+                                            <i class="bi bi-calendar me-1"></i>Entretien
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="application-card">
+                                    <div class="d-flex align-items-start gap-3">
+                                        <div class="user-avatar">
+                                            MA
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-1">Mehdi Ali</h6>
+                                            <p class="text-muted mb-2">UX Designer</p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <small class="text-muted">Il y a 2 jours</small>
+                                                <span class="badge bg-info">En cours</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex gap-2 mt-3">
+                                        <button class="btn btn-sm btn-outline-primary flex-fill">
+                                            <i class="bi bi-eye me-1"></i>Voir CV
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-secondary flex-fill">
+                                            <i class="bi bi-chat me-1"></i>Message
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="text-center mt-3">
+                                <a href="#" class="btn btn-outline-primary w-100">
+                                    Voir toutes les candidatures
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <ul class="nav nav-tabs" id="statsTab">
+                        <li class="nav-item">
+                            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#monthly">
+                                Ce mois-ci
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#quarterly">
+                                Ce trimestre
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#yearly">
+                                Cette année
+                            </button>
+                        </li>
+                    </ul>
+                    
+                    <div class="tab-content mt-4">
+                        <div class="tab-pane fade show active" id="monthly">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6>Performance des offres</h6>
+                                    <div class="d-flex flex-column gap-3 mt-3">
+                                        <div>
+                                            <div class="d-flex justify-content-between mb-1">
+                                                <span>Développeur Full Stack</span>
+                                                <span>15 candidatures</span>
+                                            </div>
+                                            <div class="progress" style="height: 8px;">
+                                                <div class="progress-bar bg-primary" style="width: 75%"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="d-flex justify-content-between mb-1">
+                                                <span>Data Analyst</span>
+                                                <span>22 candidatures</span>
+                                            </div>
+                                            <div class="progress" style="height: 8px;">
+                                                <div class="progress-bar bg-success" style="width: 100%"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="d-flex justify-content-between mb-1">
+                                                <span>UX Designer</span>
+                                                <span>8 candidatures</span>
+                                            </div>
+                                            <div class="progress" style="height: 8px;">
+                                                <div class="progress-bar bg-warning" style="width: 40%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <h6>Statistiques générales</h6>
+                                    <div class="row mt-3">
+                                        <div class="col-6 mb-3">
+                                            <div class="text-center p-3 border rounded">
+                                                <div class="fs-4 text-primary">92%</div>
+                                                <small class="text-muted">Taux de réponse</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 mb-3">
+                                            <div class="text-center p-3 border rounded">
+                                                <div class="fs-4 text-success">3.2j</div>
+                                                <small class="text-muted">Temps réponse moyen</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="text-center p-3 border rounded">
+                                                <div class="fs-4 text-warning">35%</div>
+                                                <small class="text-muted">Taux conversion</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="text-center p-3 border rounded">
+                                                <div class="fs-4 text-info">4.8</div>
+                                                <small class="text-muted">Note moyenne</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('sidebarToggle').addEventListener('click', function() {
+            document.querySelector('.sidebar').classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

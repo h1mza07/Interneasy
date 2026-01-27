@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur de CV • InternEasy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .cv-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .cv-header {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            color: white;
+            border-radius: var(--border-radius-lg);
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .cv-stepper {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin: 3rem 0;
+        }
+        
+        .cv-stepper::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #e2e8f0;
+            z-index: 1;
+        }
+        
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            background: #e2e8f0;
+            color: var(--gray);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .step.active .step-circle {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .step.completed .step-circle {
+            background: var(--success);
+            color: white;
+        }
+        
+        .step-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--gray);
+        }
+        
+        .step.active .step-label {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .cv-form-section {
+            background: white;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-lg);
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            display: none;
+        }
+        
+        .cv-form-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .section-title {
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--primary-light);
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        
+        .skill-input {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .skill-tag {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .skill-tag button {
+            background: none;
+            border: none;
+            color: var(--primary-dark);
+            padding: 0;
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+        
+        .experience-item, .education-item {
+            background: #f8fafc;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .cv-preview-container {
+            position: sticky;
+            top: 2rem;
+        }
+        
+        .cv-preview {
+            background: white;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-lg);
+            padding: 2rem;
+            height: 800px;
+            overflow-y: auto;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        .cv-header-preview {
+            background: var(--primary);
+            color: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+        }
+        
+        .cv-section-preview {
+            margin-bottom: 1.5rem;
+        }
+        
+        .cv-section-title {
+            color: var(--primary);
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 2px solid #f1f5f9;
+        }
+        
+        .btn-prev, .btn-next {
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            border-radius: var(--border-radius);
+        }
+        
+        .btn-next {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+        }
+        
+        .btn-next:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+        }
+        
+        .btn-generate {
+            background: linear-gradient(135deg, var(--success) 0%, #34d399 100%);
+            color: white;
+            border: none;
+            padding: 1rem 3rem;
+            font-weight: 600;
+            border-radius: var(--border-radius);
+            font-size: 1.1rem;
+        }
+        
+        .btn-generate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+        }
+        
+        .template-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .template-card {
+            border: 2px solid #e2e8f0;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .template-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+        
+        .template-card.active {
+            border-color: var(--primary);
+            background: rgba(37, 99, 235, 0.05);
+        }
+        
+        .template-preview {
+            height: 120px;
+            background: #f8fafc;
+            border-radius: var(--border-radius);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray);
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 992px) {
+            .cv-stepper {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+            
+            .cv-stepper::before {
+                display: none;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .cv-preview-container {
+                margin-top: 2rem;
+            }
+        }
+        
+        @media print {
+            .cv-preview {
+                box-shadow: none;
+                height: auto;
+                overflow: visible;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cv-container">
+        <a href="dashboard_student.html" class="back-link">
+            <i class="bi bi-arrow-left"></i>
+            Retour au dashboard
+        </a>
+        
+        <div class="cv-header">
+            <h1 class="mb-3">Générateur de CV intelligent</h1>
+            <p class="mb-0 opacity-75">Créez un CV professionnel en quelques étapes. Exportez en PDF ou partagez directement.</p>
+        </div>
+        
+        <div class="cv-stepper">
+            <div class="step active" id="step1">
+                <div class="step-circle">1</div>
+                <span class="step-label">Modèle</span>
+            </div>
+            <div class="step" id="step2">
+                <div class="step-circle">2</div>
+                <span class="step-label">Informations</span>
+            </div>
+            <div class="step" id="step3">
+                <div class="step-circle">3</div>
+                <span class="step-label">Expériences</span>
+            </div>
+            <div class="step" id="step4">
+                <div class="step-circle">4</div>
+                <span class="step-label">Finalisation</span>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-7">
+                <form id="cvForm">
+                    <!-- Étape 1: Choix du modèle -->
+                    <div class="cv-form-section active" id="section1">
+                        <h3 class="section-title">Choisissez un modèle</h3>
+                        
+                        <div class="template-selector">
+                            <div class="template-card active" data-template="modern">
+                                <div class="template-preview">
+                                    <div class="text-center">
+                                        <div class="fw-bold text-primary">Moderne</div>
+                                        <small>Design contemporain</small>
+                                    </div>
+                                </div>
+                                <h6>Moderne</h6>
+                                <small class="text-muted">Recommandé pour les métiers tech</small>
+                            </div>
+                            
+                            <div class="template-card" data-template="classic">
+                                <div class="template-preview">
+                                    <div class="text-center">
+                                        <div class="fw-bold text-primary">Classique</div>
+                                        <small>Style traditionnel</small>
+                                    </div>
+                                </div>
+                                <h6>Classique</h6>
+                                <small class="text-muted">Pour tous les secteurs</small>
+                            </div>
+                            
+                            <div class="template-card" data-template="creative">
+                                <div class="template-preview">
+                                    <div class="text-center">
+                                        <div class="fw-bold text-primary">Créatif</div>
+                                        <small>Design unique</small>
+                                    </div>
+                                </div>
+                                <h6>Créatif</h6>
+                                <small class="text-muted">Design, marketing, arts</small>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <div></div>
+                            <button type="button" class="btn-next" onclick="nextStep()">
+                                Suivant
+                                <i class="bi bi-arrow-right ms-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Étape 2: Informations personnelles -->
+                    <div class="cv-form-section" id="section2">
+                        <h3 class="section-title">Informations personnelles</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Prénom *</label>
+                                <input type="text" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Nom *</label>
+                                <input type="text" class="form-control" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Titre professionnel *</label>
+                                <input type="text" class="form-control" placeholder="Ex: Développeur Full Stack" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Téléphone *</label>
+                                <input type="tel" class="form-control" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Email *</label>
+                            <input type="email" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">LinkedIn / Portfolio</label>
+                            <input type="url" class="form-control" placeholder="https://">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">À propos</label>
+                            <textarea class="form-control" rows="4" placeholder="Brève description de votre profil..."></textarea>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-outline-secondary btn-prev" onclick="prevStep()">
+                                <i class="bi bi-arrow-left me-2"></i>
+                                Retour
+                            </button>
+                            <button type="button" class="btn-next" onclick="nextStep()">
+                                Suivant
+                                <i class="bi bi-arrow-right ms-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Étape 3: Éducation et compétences -->
+                    <div class="cv-form-section" id="section3">
+                        <h3 class="section-title">Formation & Compétences</h3>
+                        
+                        <div class="mb-4">
+                            <h5 class="mb-3">Formation</h5>
+                            <div class="education-item">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Diplôme *</label>
+                                        <input type="text" class="form-control" placeholder="Ex: Master en Informatique" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Établissement *</label>
+                                        <input type="text" class="form-control" placeholder="Ex: Université Hassan II" required>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Période *</label>
+                                        <input type="text" class="form-control" placeholder="Ex: 2020-2024" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Ville</label>
+                                        <input type="text" class="form-control" placeholder="Ex: Casablanca">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button type="button" class="btn btn-outline-primary btn-sm">
+                                <i class="bi bi-plus me-1"></i>
+                                Ajouter une formation
+                            </button>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h5 class="mb-3">Compétences techniques</h5>
+                            <div class="skill-input">
+                                <input type="text" class="form-control" placeholder="Ajouter une compétence" id="skillInput">
+                                <button type="button" class="btn btn-primary" onclick="addSkill()">Ajouter</button>
+                            </div>
+                            <div class="skills-list" id="skillsList">
+                                <span class="skill-tag">
+                                    JavaScript
+                                    <button type="button" onclick="removeSkill(this)">&times;</button>
+                                </span>
+                                <span class="skill-tag">
+                                    React.js
+                                    <button type="button" onclick="removeSkill(this)">&times;</button>
+                                </span>
+                                <span class="skill-tag">
+                                    Node.js
+                                    <button type="button" onclick="removeSkill(this)">&times;</button>
+                                </span>
+                                <span class="skill-tag">
+                                    MongoDB
+                                    <button type="button" onclick="removeSkill(this)">&times;</button>
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h5 class="mb-3">Langues</h5>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Langue</label>
+                                    <select class="form-select">
+                                        <option>Arabe</option>
+                                        <option>Français</option>
+                                        <option>Anglais</option>
+                                        <option>Espagnol</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Niveau</label>
+                                    <select class="form-select">
+                                        <option>Débutant</option>
+                                        <option>Intermédiaire</option>
+                                        <option>Avancé</option>
+                                        <option>Courant</option>
+                                        <option>Bilingue</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-outline-secondary btn-prev" onclick="prevStep()">
+                                <i class="bi bi-arrow-left me-2"></i>
+                                Retour
+                            </button>
+                            <button type="button" class="btn-next" onclick="nextStep()">
+                                Suivant
+                                <i class="bi bi-arrow-right ms-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Étape 4: Expériences et finalisation -->
+                    <div class="cv-form-section" id="section4">
+                        <h3 class="section-title">Expériences professionnelles</h3>
+                        
+                        <div class="experience-item">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Poste *</label>
+                                    <input type="text" class="form-control" placeholder="Ex: Stagiaire Développeur" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Entreprise *</label>
+                                    <input type="text" class="form-control" placeholder="Ex: TechMaroc" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Période *</label>
+                                    <input type="text" class="form-control" placeholder="Ex: Juin 2023 - Août 2023" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Ville</label>
+                                    <input type="text" class="form-control" placeholder="Ex: Casablanca">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Description</label>
+                                <textarea class="form-control" rows="3" placeholder="Décrivez vos missions et réalisations..."></textarea>
+                            </div>
+                        </div>
+                        
+                        <button type="button" class="btn btn-outline-primary mb-4">
+                            <i class="bi bi-plus me-1"></i>
+                            Ajouter une expérience
+                        </button>
+                        
+                        <div class="form-check mb-4">
+                            <input class="form-check-input" type="checkbox" required>
+                            <label class="form-check-label">
+                                Je certifie que les informations fournies sont exactes
+                            </label>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-outline-secondary btn-prev" onclick="prevStep()">
+                                <i class="bi bi-arrow-left me-2"></i>
+                                Retour
+                            </button>
+                            <button type="button" class="btn-generate" onclick="generateCV()">
+                                <i class="bi bi-file-earmark-pdf me-2"></i>
+                                Générer mon CV PDF
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="col-lg-5">
+                <div class="cv-preview-container">
+                    <div class="cv-preview" id="cvPreview">
+                        <div class="cv-header-preview">
+                            <h2 class="mb-2">Mohamed Hassan</h2>
+                            <h4 class="mb-3">Développeur Full Stack</h4>
+                            <div class="row">
+                                <div class="col-6">
+                                    <p class="mb-1">📧 mohamed.hassan@email.com</p>
+                                    <p class="mb-1">📱 +212 6XX XXX XXX</p>
+                                </div>
+                                <div class="col-6">
+                                    <p class="mb-1">📍 Casablanca, Maroc</p>
+                                    <p class="mb-0">🔗 linkedin.com/in/mohamedhassan</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="cv-section-preview">
+                            <h4 class="cv-section-title">Profil</h4>
+                            <p>Étudiant en informatique passionné par le développement web. À la recherche d'un stage de fin d'études pour appliquer mes compétences en React, Node.js et bases de données.</p>
+                        </div>
+                        
+                        <div class="cv-section-preview">
+                            <h4 class="cv-section-title">Formation</h4>
+                            <p><strong>Master en Informatique</strong><br>
+                            Université Hassan II, Casablanca<br>
+                            2020 - 2024</p>
+                        </div>
+                        
+                        <div class="cv-section-preview">
+                            <h4 class="cv-section-title">Expérience</h4>
+                            <p><strong>Stagiaire Développeur</strong><br>
+                            TechMaroc, Casablanca<br>
+                            Juin 2023 - Août 2023<br>
+                            Développement d'applications web avec React et Node.js</p>
+                        </div>
+                        
+                        <div class="cv-section-preview">
+                            <h4 class="cv-section-title">Compétences</h4>
+                            <p>JavaScript • React.js • Node.js • MongoDB • Git • Docker • HTML/CSS</p>
+                        </div>
+                        
+                        <div class="cv-section-preview">
+                            <h4 class="cv-section-title">Langues</h4>
+                            <p>Arabe (Natale) • Français (Courant) • Anglais (Intermédiaire)</p>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex gap-2 mt-3">
+                        <button class="btn btn-outline-primary flex-fill" onclick="printCV()">
+                            <i class="bi bi-printer me-2"></i>
+                            Imprimer
+                        </button>
+                        <button class="btn btn-outline-success flex-fill" onclick="downloadCV()">
+                            <i class="bi bi-download me-2"></i>
+                            Télécharger PDF
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let currentStep = 1;
+        let selectedTemplate = 'modern';
+        
+        // Navigation entre les étapes
+        function nextStep() {
+            if (currentStep < 4) {
+                document.getElementById('section' + currentStep).classList.remove('active');
+                document.getElementById('step' + currentStep).classList.remove('active');
+                document.getElementById('step' + currentStep).classList.add('completed');
+                
+                currentStep++;
+                
+                document.getElementById('section' + currentStep).classList.add('active');
+                document.getElementById('step' + currentStep).classList.add('active');
+            }
+        }
+        
+        function prevStep() {
+            if (currentStep > 1) {
+                document.getElementById('section' + currentStep).classList.remove('active');
+                document.getElementById('step' + currentStep).classList.remove('active');
+                document.getElementById('step' + currentStep).classList.remove('completed');
+                
+                currentStep--;
+                
+                document.getElementById('section' + currentStep).classList.add('active');
+                document.getElementById('step' + currentStep).classList.add('active');
+            }
+        }
+        
+        // Sélection du template
+        document.querySelectorAll('.template-card').forEach(card => {
+            card.addEventListener('click', function() {
+                document.querySelectorAll('.template-card').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                selectedTemplate = this.dataset.template;
+                updatePreviewTemplate();
+            });
+        });
+        
+        // Gestion des compétences
+        function addSkill() {
+            const input = document.getElementById('skillInput');
+            const skill = input.value.trim();
+            
+            if (skill) {
+                const skillsList = document.getElementById('skillsList');
+                const skillTag = document.createElement('span');
+                skillTag.className = 'skill-tag';
+                skillTag.innerHTML = `
+                    ${skill}
+                    <button type="button" onclick="removeSkill(this)">&times;</button>
+                `;
+                skillsList.appendChild(skillTag);
+                input.value = '';
+                updatePreviewSkills();
+            }
+        }
+        
+        function removeSkill(button) {
+            const skillTag = button.parentElement;
+            skillTag.remove();
+            updatePreviewSkills();
+        }
+        
+        // Mise à jour de l'aperçu
+        function updatePreviewTemplate() {
+            const preview = document.getElementById('cvPreview');
+            preview.className = 'cv-preview';
+            preview.classList.add('template-' + selectedTemplate);
+        }
+        
+        function updatePreviewSkills() {
+            // Implémenter la mise à jour des compétences dans l'aperçu
+        }
+        
+        // Génération du CV
+        function generateCV() {
+            alert('CV généré avec succès ! Le téléchargement va commencer.');
+            // En production, appeler une API pour générer le PDF
+            downloadCV();
+        }
+        
+        function printCV() {
+            window.print();
+        }
+        
+        function downloadCV() {
+            alert('Fonctionnalité PDF : En production, cela téléchargerait un PDF généré côté serveur.');
+        }
+        
+        // Mise à jour en temps réel de l'aperçu
+        document.querySelectorAll('#cvForm input, #cvForm textarea').forEach(input => {
+            input.addEventListener('input', function() {
+                updateLivePreview();
+            });
+        });
+        
+        function updateLivePreview() {
+            // Implémenter la mise à jour dynamique de l'aperçu
+        }
+    </script>
+</body>
+</html>
