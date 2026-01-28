@@ -20,15 +20,15 @@
         
         .register-card {
             background: white;
-            border-radius: 12px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-xl);
             width: 100%;
             max-width: 800px;
             overflow: hidden;
         }
         
         .register-header {
-            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            background: var(--gradient-primary);
             color: white;
             padding: 2.5rem 2rem;
             text-align: center;
@@ -73,7 +73,7 @@
             width: 32px;
             height: 32px;
             background: #e2e8f0;
-            color: #6b7280;
+            color: var(--gray);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -84,23 +84,23 @@
         }
         
         .step.active .step-number {
-            background: #3b82f6;
+            background: var(--primary);
             color: white;
         }
         
         .step.completed .step-number {
-            background: #10b981;
+            background: var(--success);
             color: white;
         }
         
         .step-label {
             font-size: 0.875rem;
             font-weight: 500;
-            color: #6b7280;
+            color: var(--gray);
         }
         
         .step.active .step-label {
-            color: #3b82f6;
+            color: var(--primary);
             font-weight: 600;
         }
         
@@ -134,23 +134,13 @@
         
         .form-label {
             font-weight: 600;
-            color: #1e293b;
+            color: var(--dark);
             margin-bottom: 0.5rem;
             display: block;
         }
         
         .form-control {
             width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            font-size: 1rem;
-        }
-        
-        .form-control:focus {
-            outline: none;
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
         
         .form-actions {
@@ -164,14 +154,11 @@
         .btn-prev, .btn-next {
             padding: 0.75rem 2rem;
             font-weight: 600;
-            border-radius: 8px;
-            border: 1px solid #d1d5db;
-            background: white;
-            cursor: pointer;
+            border-radius: var(--border-radius);
         }
         
         .btn-next {
-            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            background: var(--gradient-primary);
             color: white;
             border: none;
         }
@@ -182,16 +169,14 @@
         }
         
         .btn-submit {
-            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            background: var(--gradient-primary);
             color: white;
             border: none;
             padding: 0.75rem 3rem;
             font-weight: 600;
-            border-radius: 8px;
+            border-radius: var(--border-radius);
             width: 100%;
             margin-top: 2rem;
-            cursor: pointer;
-            font-size: 1rem;
         }
         
         .btn-submit:hover {
@@ -208,7 +193,7 @@
         
         .user-type-option {
             border: 2px solid #e2e8f0;
-            border-radius: 8px;
+            border-radius: var(--border-radius);
             padding: 2rem 1.5rem;
             text-align: center;
             cursor: pointer;
@@ -216,28 +201,28 @@
         }
         
         .user-type-option:hover {
-            border-color: #93c5fd;
+            border-color: var(--primary-light);
             background: rgba(96, 165, 250, 0.05);
         }
         
         .user-type-option.active {
-            border-color: #3b82f6;
+            border-color: var(--primary);
             background: rgba(37, 99, 235, 0.1);
         }
         
         .user-type-option i {
             font-size: 2rem;
-            color: #3b82f6;
+            color: var(--primary);
             margin-bottom: 1rem;
         }
         
         .user-type-option h4 {
             margin-bottom: 0.5rem;
-            color: #1e293b;
+            color: var(--dark);
         }
         
         .user-type-option p {
-            color: #6b7280;
+            color: var(--gray);
             font-size: 0.875rem;
             margin: 0;
         }
@@ -250,7 +235,7 @@
         }
         
         .register-footer a {
-            color: #3b82f6;
+            color: var(--primary);
             text-decoration: none;
             font-weight: 500;
         }
@@ -274,36 +259,18 @@
         }
         
         .password-strength.weak .password-strength-bar {
-            background: #dc2626;
+            background: var(--danger);
             width: 30%;
         }
         
         .password-strength.medium .password-strength-bar {
-            background: #d97706;
+            background: var(--warning);
             width: 60%;
         }
         
         .password-strength.strong .password-strength-bar {
-            background: #059669;
+            background: var(--success);
             width: 100%;
-        }
-
-        /* Message d'erreur PHP */
-        .php-message {
-            padding: 12px 16px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-weight: 500;
-        }
-        .php-success {
-            background-color: #f0fdf4;
-            color: #059669;
-            border: 1px solid #a7f3d0;
-        }
-        .php-error {
-            background-color: #fef2f2;
-            color: #dc2626;
-            border: 1px solid #fecaca;
         }
     </style>
 </head>
@@ -316,9 +283,6 @@
             </div>
             
             <div class="register-body">
-                <!-- Message PHP (si présent) -->
-                <div id="phpMessage" class="php-message" style="display: none;"></div>
-                
                 <!-- Étapes de progression -->
                 <div class="progress-steps">
                     <div class="step active" id="step1">
@@ -335,125 +299,192 @@
                     </div>
                 </div>
                 
-                <!-- FORMULAIRE ÉTUDIANT (pour PHP) -->
-                <form method="POST" action="index.php?controller=Auth&action=registerEtudiant" id="registerStudentForm" style="display: none;">
-                    <h3 class="mb-4">Inscription Étudiant</h3>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Prénom</label>
-                            <input type="text" class="form-control" name="prenom" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Nom</label>
-                            <input type="text" class="form-control" name="nom" required>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Adresse email</label>
-                        <input type="email" class="form-control" name="email" required>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Mot de passe</label>
-                            <input type="password" class="form-control" name="motDePasse" required id="studentPassword">
-                            <div class="password-strength" id="studentPasswordStrength">
-                                <div class="password-strength-bar"></div>
+                <!-- Formulaire en plusieurs étapes -->
+                <form id="registerForm">
+                    <!-- Étape 1: Type de compte -->
+                    <div class="form-section active" id="section1">
+                        <h3 class="mb-4">Choisissez votre type de compte</h3>
+                        
+                        <div class="user-type-selection">
+                            <div class="user-type-option active" data-type="student">
+                                <i class="bi bi-person-circle"></i>
+                                <h4>Étudiant</h4>
+                                <p>Je cherche un stage ou une alternance</p>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Confirmer le mot de passe</label>
-                            <input type="password" class="form-control" name="confirmPassword" required>
-                        </div>
-                    </div>
-                    
-                    <button type="submit" class="btn-submit" id="studentSubmitBtn">
-                        Créer mon compte étudiant
-                    </button>
-                    
-                    <div class="text-center mt-3">
-                        <p class="text-muted">Déjà inscrit ? 
-                            <a href="index.php?controller=Auth&action=login">Se connecter</a>
-                        </p>
-                    </div>
-                </form>
-                
-                <!-- FORMULAIRE ENTREPRISE (pour PHP) -->
-                <form method="POST" action="index.php?controller=Auth&action=registerEntreprise" id="registerCompanyForm" style="display: none;">
-                    <h3 class="mb-4">Inscription Entreprise</h3>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Nom de l'entreprise</label>
-                        <input type="text" class="form-control" name="nom" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Adresse email</label>
-                        <input type="email" class="form-control" name="email" required>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Mot de passe</label>
-                            <input type="password" class="form-control" name="motDePasse" required id="companyPassword">
-                            <div class="password-strength" id="companyPasswordStrength">
-                                <div class="password-strength-bar"></div>
+                            
+                            <div class="user-type-option" data-type="company">
+                                <i class="bi bi-building"></i>
+                                <h4>Entreprise</h4>
+                                <p>Je propose des stages et recrute des talents</p>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Confirmer le mot de passe</label>
-                            <input type="password" class="form-control" name="confirmPassword" required>
-                        </div>
-                    </div>
-                    
-                    <div class="alert alert-info">
-                        <i class="bi bi-info-circle"></i>
-                        <strong>Important :</strong> Votre compte doit être validé par un administrateur avant de pouvoir vous connecter.
-                    </div>
-                    
-                    <button type="submit" class="btn-submit" id="companySubmitBtn">
-                        Créer mon compte entreprise
-                    </button>
-                    
-                    <div class="text-center mt-3">
-                        <p class="text-muted">Déjà inscrit ? 
-                            <a href="index.php?controller=Auth&action=login">Se connecter</a>
-                        </p>
-                    </div>
-                </form>
-                
-                <!-- ÉCRAN DE SÉLECTION (étape 1) -->
-                <div id="selectionScreen">
-                    <h3 class="mb-4">Choisissez votre type de compte</h3>
-                    
-                    <div class="user-type-selection">
-                        <div class="user-type-option active" data-type="student" id="selectStudent">
-                            <i class="bi bi-person-circle"></i>
-                            <h4>Étudiant</h4>
-                            <p>Je cherche un stage ou une alternance</p>
                         </div>
                         
-                        <div class="user-type-option" data-type="company" id="selectCompany">
-                            <i class="bi bi-building"></i>
-                            <h4>Entreprise</h4>
-                            <p>Je propose des stages et recrute des talents</p>
+                        <div class="form-actions">
+                            <div></div> <!-- Espace vide à gauche -->
+                            <button type="button" class="btn-next" onclick="nextStep()">
+                                Suivant
+                                <i class="bi bi-arrow-right ms-2"></i>
+                            </button>
                         </div>
                     </div>
                     
-                    <div class="text-center mt-4">
-                        <button type="button" class="btn btn-primary btn-lg" id="continueBtn" onclick="showSelectedForm()">
-                            Continuer avec <span id="selectedTypeText">Étudiant</span>
-                            <i class="bi bi-arrow-right ms-2"></i>
-                        </button>
+                    <!-- Étape 2: Informations -->
+                    <div class="form-section" id="section2">
+                        <h3 class="mb-4">Informations personnelles</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Prénom</label>
+                                <input type="text" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Nom</label>
+                                <input type="text" class="form-control" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Adresse email</label>
+                            <input type="email" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Mot de passe</label>
+                                <input type="password" class="form-control" required id="password">
+                                <div class="password-strength" id="passwordStrength">
+                                    <div class="password-strength-bar"></div>
+                                </div>
+                                <small class="text-muted">8 caractères minimum avec chiffres et lettres</small>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Confirmer le mot de passe</label>
+                                <input type="password" class="form-control" required>
+                            </div>
+                        </div>
+                        
+                        <!-- Champs étudiants -->
+                        <div id="studentFields">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">École/Université</label>
+                                    <input type="text" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Niveau d'études</label>
+                                    <select class="form-control" required>
+                                        <option value="">Sélectionnez</option>
+                                        <option>BAC+2</option>
+                                        <option>BAC+3</option>
+                                        <option>BAC+4</option>
+                                        <option>BAC+5</option>
+                                        <option>BAC+6 et plus</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Filière</label>
+                                <input type="text" class="form-control" required>
+                            </div>
+                        </div>
+                        
+                        <!-- Champs entreprises -->
+                        <div id="companyFields" style="display: none;">
+                            <div class="form-group">
+                                <label class="form-label">Nom de l'entreprise</label>
+                                <input type="text" class="form-control">
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Secteur d'activité</label>
+                                    <select class="form-control">
+                                        <option value="">Sélectionnez</option>
+                                        <option>Technologie</option>
+                                        <option>Finance</option>
+                                        <option>Commerce</option>
+                                        <option>Industrie</option>
+                                        <option>Services</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Taille de l'entreprise</label>
+                                    <select class="form-control">
+                                        <option value="">Sélectionnez</option>
+                                        <option>1-10 employés</option>
+                                        <option>11-50 employés</option>
+                                        <option>51-200 employés</option>
+                                        <option>200+ employés</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-outline-secondary btn-prev" onclick="prevStep()">
+                                <i class="bi bi-arrow-left me-2"></i>
+                                Retour
+                            </button>
+                            <button type="button" class="btn-next" onclick="nextStep()">
+                                Suivant
+                                <i class="bi bi-arrow-right ms-2"></i>
+                            </button>
+                        </div>
                     </div>
-                </div>
+                    
+                    <!-- Étape 3: Validation -->
+                    <div class="form-section" id="section3">
+                        <h3 class="mb-4">Terminer l'inscription</h3>
+                        
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">Récapitulatif</h5>
+                                <div id="summaryContent">
+                                    <!-- Récapitulatif dynamique -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" required id="terms">
+                                <label class="form-check-label" for="terms">
+                                    J'accepte les 
+                                    <a href="#" class="text-primary">conditions d'utilisation</a>
+                                     et la 
+                                    <a href="#" class="text-primary">politique de confidentialité</a>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="newsletter">
+                                <label class="form-check-label" for="newsletter">
+                                    Je souhaite recevoir les actualités et offres spéciales par email
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn-submit">
+                            Créer mon compte
+                        </button>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-outline-secondary btn-prev" onclick="prevStep()">
+                                <i class="bi bi-arrow-left me-2"></i>
+                                Retour
+                            </button>
+                            <div></div> <!-- Espace vide à droite -->
+                        </div>
+                    </div>
+                </form>
                 
                 <div class="register-footer">
                     <p class="text-muted">
                         Déjà inscrit ? 
-                        <a href="index.php?controller=Auth&action=login">Connectez-vous</a>
+                        <a href="login.html">Connectez-vous</a>
                     </p>
                     <small class="text-muted">
                         © 2024 InternEasy • Votre carrière commence ici
@@ -465,44 +496,63 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        let selectedType = 'student';
+        let currentStep = 1;
+        let userType = 'student';
         
         // Sélection du type d'utilisateur
         document.querySelectorAll('.user-type-option').forEach(option => {
             option.addEventListener('click', function() {
                 document.querySelectorAll('.user-type-option').forEach(opt => opt.classList.remove('active'));
                 this.classList.add('active');
-                selectedType = this.dataset.type;
+                userType = this.dataset.type;
                 
-                // Mettre à jour le texte du bouton
-                document.getElementById('selectedTypeText').textContent = 
-                    selectedType === 'student' ? 'Étudiant' : 'Entreprise';
+                // Afficher les champs appropriés
+                if (userType === 'student') {
+                    document.getElementById('studentFields').style.display = 'block';
+                    document.getElementById('companyFields').style.display = 'none';
+                } else {
+                    document.getElementById('studentFields').style.display = 'none';
+                    document.getElementById('companyFields').style.display = 'block';
+                }
             });
         });
         
-        // Afficher le formulaire sélectionné
-        function showSelectedForm() {
-            document.getElementById('selectionScreen').style.display = 'none';
-            
-            if (selectedType === 'student') {
-                document.getElementById('registerStudentForm').style.display = 'block';
-            } else {
-                document.getElementById('registerCompanyForm').style.display = 'block';
+        // Navigation entre les étapes
+        function nextStep() {
+            if (currentStep < 3) {
+                document.getElementById('section' + currentStep).classList.remove('active');
+                document.getElementById('step' + currentStep).classList.remove('active');
+                document.getElementById('step' + currentStep).classList.add('completed');
+                
+                currentStep++;
+                
+                document.getElementById('section' + currentStep).classList.add('active');
+                document.getElementById('step' + currentStep).classList.add('active');
+                
+                // Mettre à jour le récapitulatif à l'étape 3
+                if (currentStep === 3) {
+                    updateSummary();
+                }
             }
         }
         
-        // Force du mot de passe (étudiant)
-        document.getElementById('studentPassword')?.addEventListener('input', function(e) {
-            checkPasswordStrength(e.target.value, 'studentPasswordStrength');
-        });
+        function prevStep() {
+            if (currentStep > 1) {
+                document.getElementById('section' + currentStep).classList.remove('active');
+                document.getElementById('step' + currentStep).classList.remove('active');
+                document.getElementById('step' + currentStep).classList.remove('completed');
+                
+                currentStep--;
+                
+                document.getElementById('section' + currentStep).classList.add('active');
+                document.getElementById('step' + currentStep).classList.add('active');
+            }
+        }
         
-        // Force du mot de passe (entreprise)
-        document.getElementById('companyPassword')?.addEventListener('input', function(e) {
-            checkPasswordStrength(e.target.value, 'companyPasswordStrength');
-        });
-        
-        function checkPasswordStrength(password, elementId) {
-            const strengthBar = document.getElementById(elementId);
+        // Force du mot de passe
+        document.getElementById('password').addEventListener('input', function(e) {
+            const password = e.target.value;
+            const strengthBar = document.getElementById('passwordStrength');
             
             let strength = 'weak';
             if (password.length >= 8 && /[A-Z]/.test(password) && /[0-9]/.test(password)) {
@@ -512,73 +562,37 @@
             }
             
             strengthBar.className = 'password-strength ' + strength;
-        }
-        
-        // Vérification des mots de passe identiques
-        function validatePasswords(formId) {
-            const form = document.getElementById(formId);
-            const password = form.querySelector('input[name="motDePasse"]').value;
-            const confirmPassword = form.querySelector('input[name="confirmPassword"]').value;
-            
-            if (password !== confirmPassword) {
-                alert('Les mots de passe ne correspondent pas !');
-                return false;
-            }
-            
-            if (password.length < 6) {
-                alert('Le mot de passe doit contenir au moins 6 caractères');
-                return false;
-            }
-            
-            return true;
-        }
-        
-        // Soumission du formulaire étudiant
-        document.getElementById('registerStudentForm')?.addEventListener('submit', function(e) {
-            if (!validatePasswords('registerStudentForm')) {
-                e.preventDefault();
-                return;
-            }
-            
-            // Afficher le chargement
-            const submitBtn = document.getElementById('studentSubmitBtn');
-            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Création du compte...';
-            submitBtn.disabled = true;
         });
         
-        // Soumission du formulaire entreprise
-        document.getElementById('registerCompanyForm')?.addEventListener('submit', function(e) {
-            if (!validatePasswords('registerCompanyForm')) {
-                e.preventDefault();
-                return;
-            }
+        // Mettre à jour le récapitulatif
+        function updateSummary() {
+            const summary = document.getElementById('summaryContent');
+            const typeText = userType === 'student' ? 'Étudiant' : 'Entreprise';
             
-            // Afficher le chargement
-            const submitBtn = document.getElementById('companySubmitBtn');
-            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Création du compte...';
-            submitBtn.disabled = true;
-        });
-        
-        // Vérifier les messages PHP dans l'URL
-        function checkUrlMessages() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const messageDiv = document.getElementById('phpMessage');
-            
-            if (urlParams.has('error')) {
-                messageDiv.className = 'php-message php-error';
-                messageDiv.textContent = 'Erreur lors de l\'inscription. Veuillez vérifier vos informations.';
-                messageDiv.style.display = 'block';
-            }
-            
-            if (urlParams.has('success')) {
-                messageDiv.className = 'php-message php-success';
-                messageDiv.textContent = 'Inscription réussie ! Vous pouvez maintenant vous connecter.';
-                messageDiv.style.display = 'block';
-            }
+            summary.innerHTML = `
+                <p><strong>Type de compte:</strong> ${typeText}</p>
+                <p><strong>Email:</strong> ${document.querySelector('#section2 input[type="email"]').value}</p>
+                ${userType === 'student' ? 
+                    `<p><strong>Études:</strong> ${document.querySelector('#studentFields input[type="text"]').value}</p>` :
+                    `<p><strong>Entreprise:</strong> ${document.querySelector('#companyFields input[type="text"]').value}</p>`
+                }
+                <p>Votre compte sera activé immédiatement après validation.</p>
+            `;
         }
         
-        // Exécuter au chargement
-        document.addEventListener('DOMContentLoaded', checkUrlMessages);
+        // Soumission du formulaire
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Redirection selon le type d'utilisateur
+            if (userType === 'student') {
+                window.location.href = 'dashboard_student.html';
+            } else {
+                window.location.href = 'dashboard_company.html';
+            }
+            
+            alert('Compte créé avec succès !');
+        });
     </script>
 </body>
 </html>
