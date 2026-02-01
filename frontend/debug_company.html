@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Entreprise</title>
+    <style>
+        .debug-box { border: 2px solid red; padding: 10px; margin: 10px; }
+    </style>
+</head>
+<body>
+    <div class="debug-box">
+        <h3>Test 1: Formulaire SIMPLE entreprise</h3>
+        <form method="POST" action="../backend/pages/register_ultimate.php">
+            <input type="hidden" name="userType" value="company">
+            <input type="text" name="companyName" placeholder="Nom entreprise" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Mot de passe" required>
+            <button type="submit">Test SIMPLE</button>
+        </form>
+    </div>
+    
+    <div class="debug-box">
+        <h3>Test 2: Vérifier champs HTML</h3>
+        <div id="companyFieldsDebug">
+            <p>Champ companyName existe: <span id="check1">...</span></p>
+            <p>Valeur champ hidden userType: <span id="check2">...</span></p>
+        </div>
+    </div>
+    
+    <script>
+        // Vérifications
+        const companyNameField = document.querySelector('input[name="companyName"]');
+        document.getElementById('check1').textContent = companyNameField ? 'OUI' : 'NON';
+        
+        const userTypeField = document.querySelector('input[name="userType"]');
+        document.getElementById('check2').textContent = userTypeField ? userTypeField.value : 'NON TROUVÉ';
+        
+        console.log('Champs trouvés:');
+        console.log('- companyName:', companyNameField);
+        console.log('- userType:', userTypeField);
+    </script>
+</body>
+</html>

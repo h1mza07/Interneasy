@@ -1,0 +1,13 @@
+RewriteEngine On
+RewriteBase /interneasy/
+
+# Rediriger les requêtes vers le backend
+RewriteRule ^login$ backend/pages/login.php [L]
+RewriteRule ^register$ backend/pages/register.php [L]
+RewriteRule ^register/student$ backend/pages/register.php?type=student [L]
+RewriteRule ^register/company$ backend/pages/register.php?type=company [L]
+
+# Rediriger vers le frontend pour les autres pages
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ frontend/$1 [L]

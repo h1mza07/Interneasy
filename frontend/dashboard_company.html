@@ -252,25 +252,37 @@
                     <i class="bi bi-speedometer2"></i>
                     <span>Tableau de bord</span>
                 </a>
-                <a href="#" class="nav-link">
-                    <i class="bi bi-plus-circle"></i>
-                    <span>Publier une offre</span>
-                </a>
+                
                 <a href="#" class="nav-link">
                     <i class="bi bi-briefcase"></i>
                     <span>Mes offres</span>
                     <span class="badge bg-primary ms-auto">5</span>
                 </a>
-                <a href="#" class="nav-link">
+                <a href="gerer_candidatures.php" class="nav-link">
                     <i class="bi bi-people"></i>
                     <span>Candidatures</span>
                     <span class="badge bg-warning ms-auto">12</span>
                 </a>
-                <a href="#" class="nav-link">
+                <!-- Ajoutez ceci dans la navigation latérale -->
+<li class="nav-item">
+    <a href="/interneasy/backend/pages/map.php" id="carte-entreprise-link" class="nav-link">
+        <i class="bi bi-geo-alt"></i>
+        <span>Carte des entreprises</span>
+    </a>
+</li>
+                <!-- Ajoutez cette ligne dans le menu latéral -->
+<li class="nav-item">
+    <a href="mon_profil_entreprise.php" class="nav-link">
+        <i class="bi bi-person"></i>
+        <span>Mon profil</span>
+        
+    </a>
+</li>
+                <a href="/interneasy/backend/pages/parametres_company.php"  class="nav-link">
                     <i class="bi bi-gear"></i>
                     <span>Paramètres</span>
                 </a>
-                <a href="#" class="nav-link">
+                <a href="/interneasy/backend/pages/stats_company.php" class="nav-link">
                     <i class="bi bi-bar-chart"></i>
                     <span>Statistiques</span>
                 </a>
@@ -398,7 +410,7 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <h5 class="mb-0">Mes offres de stage</h5>
-                                <a href="#" class="btn btn-primary">
+                                <a href="/interneasy/backend/pages/post_offer.php" class="btn btn-primary">
                                     <i class="bi bi-plus-circle me-2"></i>
                                     Nouvelle offre
                                 </a>

@@ -205,7 +205,8 @@
 </head>
 <body>
     <div class="post-offer-container">
-        <a href="dashboard_company.html" class="back-link">
+        <!-- CORRECTION : changer dashboard_company.html en dashboard_company.php -->
+        <a href=/interneasy/backend/pages/dashboard_company.php class="back-link">
             <i class="bi bi-arrow-left"></i>
             Retour au dashboard
         </a>
@@ -215,51 +216,46 @@
             <p class="mb-0 opacity-75">Remplissez ce formulaire pour publier votre offre de stage. Les champs marqués d'un * sont obligatoires.</p>
         </div>
         
-        <form id="offerForm" class="form-card">
+        <!-- Messages d'erreur/succès - SERA REMPLI PAR PHP -->
+        <div id="formMessages"></div>
+        
+        <!-- CORRECTION : L'action pointe vers post_offer.php -->
+        <form id="offerForm" method="POST" action="/interneasy/backend/pages/post_offer.php" class="form-card">
             <div class="form-section">
                 <h3 class="section-title">Informations générales</h3>
                 
                 <div class="form-row">
                     <div class="form-group">
                         <label class="form-label">Titre du poste *</label>
-                        <input type="text" class="form-control" placeholder="Ex: Développeur Full Stack" required>
+                        <input type="text" name="title" class="form-control" placeholder="Ex: Développeur Full Stack" required>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Type de contrat *</label>
-                        <select class="form-select" required>
+                        <select name="contract_type" class="form-select" required>
                             <option value="">Sélectionnez</option>
-                            <option>Stage</option>
-                            <option>Alternance</option>
-                            <option>Stage PFE</option>
-                            <option>Stage été</option>
+                            <option value="Stage">Stage</option>
+                            <option value="Alternance">Alternance</option>
+                            <option value="Stage PFE">Stage PFE</option>
+                            <option value="Stage été">Stage été</option>
                         </select>
                     </div>
                 </div>
                 
                 <div class="form-row">
                     <div class="form-group">
-                        <label class="form-label">Durée *</label>
-                        <select class="form-select" required>
-                            <option value="">Sélectionnez</option>
-                            <option>1-3 mois</option>
-                            <option>3-6 mois</option>
-                            <option>6 mois</option>
-                            <option>6-12 mois</option>
-                            <option>12 mois</option>
-                        </select>
+                        <label class="form-label">Durée (mois) *</label>
+                        <input type="number" name="duration" class="form-control" min="1" max="12" placeholder="6" required>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Date de début *</label>
-                        <input type="date" class="form-control" required>
+                        <input type="date" name="start_date" class="form-control" required>
                     </div>
                 </div>
                 
                 <div class="form-group">
                     <label class="form-label">Description du poste *</label>
-                    <div class="rich-text-editor" contenteditable="true">
-                        Décrivez les missions principales, les responsabilités et les objectifs du poste...
-                    </div>
-                    <small class="text-muted">Minimum 200 caractères</small>
+                    <textarea name="description" class="form-control" rows="5" placeholder="Décrivez les missions principales, les responsabilités et les objectifs du poste..." required></textarea>
+                    <small class="text-muted">Minimum 10 caractères</small>
                 </div>
             </div>
             
@@ -269,22 +265,22 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label class="form-label">Localisation *</label>
-                        <select class="form-select" required>
+                        <select name="city" class="form-select" required>
                             <option value="">Sélectionnez une ville</option>
-                            <option>Casablanca</option>
-                            <option>Rabat</option>
-                            <option>Marrakech</option>
-                            <option>Tanger</option>
-                            <option>Fès</option>
-                            <option>Agadir</option>
-                            <option>Remote (Télétravail)</option>
-                            <option>Hybride</option>
+                            <option value="Casablanca">Casablanca</option>
+                            <option value="Rabat">Rabat</option>
+                            <option value="Marrakech">Marrakech</option>
+                            <option value="Tanger">Tanger</option>
+                            <option value="Fès">Fès</option>
+                            <option value="Agadir">Agadir</option>
+                            <option value="Remote">Remote (Télétravail)</option>
+                            <option value="Hybride">Hybride</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Rémunération (MAD/mois)</label>
                         <div class="input-group">
-                            <input type="number" class="form-control" placeholder="Montant">
+                            <input type="number" name="salary" class="form-control" placeholder="Montant">
                             <span class="input-group-text">MAD</span>
                         </div>
                         <small class="text-muted">Laisser vide si non rémunéré</small>
@@ -294,27 +290,39 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label class="form-label">Domaine *</label>
-                        <select class="form-select" required>
+                        <select name="domain" class="form-select" required>
                             <option value="">Sélectionnez</option>
-                            <option>Informatique & Tech</option>
-                            <option>Marketing & Communication</option>
-                            <option>Finance & Comptabilité</option>
-                            <option>Ressources Humaines</option>
-                            <option>Commerce & Vente</option>
-                            <option>Ingénierie</option>
-                            <option>Santé</option>
-                            <option>Éducation</option>
+                            <option value="Informatique & Tech">Informatique & Tech</option>
+                            <option value="Marketing & Communication">Marketing & Communication</option>
+                            <option value="Finance & Comptabilité">Finance & Comptabilité</option>
+                            <option value="Ressources Humaines">Ressources Humaines</option>
+                            <option value="Commerce & Vente">Commerce & Vente</option>
+                            <option value="Ingénierie">Ingénierie</option>
+                            <option value="Santé">Santé</option>
+                            <option value="Éducation">Éducation</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Nombre de postes *</label>
-                        <input type="number" class="form-control" value="1" min="1" required>
+                        <input type="number" name="positions" class="form-control" value="1" min="1" required>
                     </div>
+                </div>
+                
+                <!-- NOUVEAU : Champ Statut -->
+                <div class="form-group">
+                    <label class="form-label">Statut de l'offre *</label>
+                    <select name="status" class="form-select" required>
+                        <option value="active" selected>Active (visible par les étudiants)</option>
+                        <option value="inactive">Inactive (masquée)</option>
+                        <option value="draft">Brouillon</option>
+                        <option value="closed">Clôturée</option>
+                    </select>
+                    <small class="text-muted">"Active" pour que l'offre soit visible sur la carte et par les étudiants</small>
                 </div>
                 
                 <div class="form-group">
                     <label class="form-label">Date limite de candidature *</label>
-                    <input type="date" class="form-control" required>
+                    <input type="date" name="deadline" class="form-control" required>
                 </div>
             </div>
             
@@ -323,13 +331,13 @@
                 
                 <div class="form-group">
                     <label class="form-label">Niveau d'études requis *</label>
-                    <select class="form-select" required>
+                    <select name="education_level" class="form-select" required>
                         <option value="">Sélectionnez</option>
-                        <option>BAC+2</option>
-                        <option>BAC+3</option>
-                        <option>BAC+4</option>
-                        <option>BAC+5</option>
-                        <option>BAC+6 et plus</option>
+                        <option value="BAC+2">BAC+2</option>
+                        <option value="BAC+3">BAC+3</option>
+                        <option value="BAC+4">BAC+4</option>
+                        <option value="BAC+5">BAC+5</option>
+                        <option value="BAC+6 et plus">BAC+6 et plus</option>
                     </select>
                 </div>
                 
@@ -342,6 +350,8 @@
                     <div class="requirements-list" id="skillsList">
                         <!-- Compétences ajoutées dynamiquement -->
                     </div>
+                    <!-- Champ caché pour envoyer les compétences -->
+                    <input type="hidden" name="requirements" id="requirementsInput">
                 </div>
                 
                 <div class="form-group">
@@ -349,29 +359,29 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox">
+                                <input class="form-check-input" type="checkbox" name="benefits[]" value="Tickets restaurant">
                                 <label class="form-check-label">Tickets restaurant</label>
                             </div>
                             <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox">
+                                <input class="form-check-input" type="checkbox" name="benefits[]" value="Mutuelle santé">
                                 <label class="form-check-label">Mutuelle santé</label>
                             </div>
                             <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox">
+                                <input class="form-check-input" type="checkbox" name="benefits[]" value="Formations">
                                 <label class="form-check-label">Formations</label>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox">
+                                <input class="form-check-input" type="checkbox" name="benefits[]" value="Prime de transport">
                                 <label class="form-check-label">Prime de transport</label>
                             </div>
                             <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox">
+                                <input class="form-check-input" type="checkbox" name="benefits[]" value="Équipement fourni">
                                 <label class="form-check-label">Équipement fourni</label>
                             </div>
                             <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox">
+                                <input class="form-check-input" type="checkbox" name="benefits[]" value="Possibilité CDI">
                                 <label class="form-check-label">Possibilité CDI</label>
                             </div>
                         </div>
@@ -395,7 +405,7 @@
             </div>
             
             <div class="form-actions">
-                <button type="button" class="btn-draft">
+                <button type="button" class="btn-draft" onclick="saveAsDraft()">
                     Enregistrer comme brouillon
                 </button>
                 <button type="submit" class="btn-publish">
@@ -435,6 +445,9 @@
                 `;
                 list.appendChild(item);
             });
+            
+            // Mettre à jour le champ caché
+            document.getElementById('requirementsInput').value = skills.join(', ');
         }
         
         function removeSkill(index) {
@@ -443,13 +456,99 @@
         }
         
         function previewOffer() {
-            alert('Cette fonctionnalité afficherait un aperçu complet de l\'offre');
+            // Récupérer les données du formulaire
+            const formData = new FormData(document.getElementById('offerForm'));
+            const data = {};
+            for (let [key, value] of formData.entries()) {
+                data[key] = value;
+            }
+            
+            // Afficher un aperçu
+            alert(`Aperçu de l'offre:\n\nTitre: ${data.title || 'Non spécifié'}\nVille: ${data.city || 'Non spécifié'}\nDurée: ${data.duration || 'Non spécifié'} mois\nDomaine: ${data.domain || 'Non spécifié'}\nStatut: ${data.status || 'Active'}`);
         }
         
+        function saveAsDraft() {
+            if (confirm('Enregistrer cette offre comme brouillon ?')) {
+                // Ici, vous pourriez envoyer une requête AJAX pour sauvegarder comme brouillon
+                alert('Offre sauvegardée comme brouillon.');
+            }
+        }
+        
+        // Gestion de la soumission du formulaire
         document.getElementById('offerForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Offre publiée avec succès ! Elle sera visible après validation.');
-            window.location.href = 'dashboard_company.html';
+            // Valider la longueur de la description
+            const description = this.querySelector('textarea[name="description"]').value;
+            if (description.length < 10) {
+                e.preventDefault();
+                showMessage('La description doit contenir au moins 200 caractères.', 'danger');
+                return;
+            }
+            
+            // Valider les dates
+            const startDate = new Date(this.querySelector('input[name="start_date"]').value);
+            const deadline = new Date(this.querySelector('input[name="deadline"]').value);
+            const today = new Date();
+            
+            if (startDate < today) {
+                e.preventDefault();
+                showMessage('La date de début ne peut pas être dans le passé.', 'danger');
+                return;
+            }
+            
+            if (deadline < today) {
+                e.preventDefault();
+                showMessage('La date limite de candidature ne peut pas être dans le passé.', 'danger');
+                return;
+            }
+            
+            if (deadline > startDate) {
+                e.preventDefault();
+                showMessage('La date limite de candidature doit être avant la date de début.', 'danger');
+                return;
+            }
+            
+            // Afficher un indicateur de chargement
+            const submitBtn = this.querySelector('.btn-publish');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Publication...';
+            submitBtn.disabled = true;
+            
+            // La soumission se fera normalement vers PHP
+        });
+        
+        function showMessage(message, type) {
+            const messagesDiv = document.getElementById('formMessages');
+            messagesDiv.innerHTML = `
+                <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            `;
+            
+            // Scroll vers le message
+            messagesDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Remplir automatiquement la date limite (1 mois à partir d'aujourd'hui)
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
+            const nextMonth = new Date(today);
+            nextMonth.setMonth(today.getMonth() + 1);
+            
+            // Formater les dates pour input[type="date"]
+            const formatDate = (date) => {
+                return date.toISOString().split('T')[0];
+            };
+            
+            // Définir la date de début (demain) et date limite (dans 1 mois)
+            const startDateInput = document.querySelector('input[name="start_date"]');
+            const deadlineInput = document.querySelector('input[name="deadline"]');
+            
+            startDateInput.min = formatDate(new Date(today.getTime() + 24 * 60 * 60 * 1000)); // Demain
+            deadlineInput.min = formatDate(new Date(today.getTime() + 24 * 60 * 60 * 1000)); // Demain
+            
+            startDateInput.value = formatDate(new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000)); // 1 semaine
+            deadlineInput.value = formatDate(nextMonth);
         });
     </script>
 </body>

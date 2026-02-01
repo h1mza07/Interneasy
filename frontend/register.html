@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription • InternEasy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* AJOUT: Style spécifique pour admin */
+        .user-type-option.admin i {
+            color: #6f42c1; /* Couleur violette pour admin */
+        }
+        
+        .user-type-option.admin.active {
+            border-color: #6f42c1;
+            background: rgba(111, 66, 193, 0.1);
+        }
+        
+        .admin-fields {
+            background: linear-gradient(135deg, #f9f7ff 0%, #f0ebff 100%);
+            border: 2px dashed #d0bcff;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .admin-code-input {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+        }
+        
+        .admin-code-input:focus {
+            border-color: #6f42c1;
+            box-shadow: 0 0 0 3px rgba(111, 66, 193, 0.1);
+        }
+        /* FIN DES AJOUTS ADMIN */
+        
+        .register-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        
+        .register-card {
+            background: white;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-xl);
+            width: 100%;
+            max-width: 900px; /* Légèrement augmenté */
+            overflow: hidden;
+        }
+        
+        .register-header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 2.5rem 2rem;
+            text-align: center;
+        }
+        
+        .register-header h1 {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .register-body {
+            padding: 2.5rem;
+        }
+        
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        
+        .progress-steps::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #e2e8f0;
+            z-index: 1;
+        }
+        
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .step-number {
+            width: 32px;
+            height: 32px;
+            background: #e2e8f0;
+            color: var(--gray);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .step.active .step-number {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .step.completed .step-number {
+            background: var(--success);
+            color: white;
+        }
+        
+        .step-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--gray);
+        }
+        
+        .step.active .step-label {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .form-section {
+            display: none;
+        }
+        
+        .form-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        
+        .form-control {
+            width: 100%;
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .btn-prev, .btn-next {
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            border-radius: var(--border-radius);
+        }
+        
+        .btn-next {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+        }
+        
+        .btn-next:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+        }
+        
+        .btn-submit {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 3rem;
+            font-weight: 600;
+            border-radius: var(--border-radius);
+            width: 100%;
+            margin-top: 2rem;
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+        }
+        
+        .user-type-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .user-type-option {
+            border: 2px solid #e2e8f0;
+            border-radius: var(--border-radius);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .user-type-option:hover {
+            border-color: var(--primary-light);
+            background: rgba(96, 165, 250, 0.05);
+        }
+        
+        .user-type-option.active {
+            border-color: var(--primary);
+            background: rgba(37, 99, 235, 0.1);
+        }
+        
+        .user-type-option i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .user-type-option h4 {
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+        
+        .user-type-option p {
+            color: var(--gray);
+            font-size: 0.875rem;
+            margin: 0;
+        }
+        
+        .register-footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .register-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .register-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .password-strength {
+            height: 4px;
+            background: #e2e8f0;
+            border-radius: 2px;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+        
+        .password-strength-bar {
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .password-strength.weak .password-strength-bar {
+            background: var(--danger);
+            width: 30%;
+        }
+        
+        .password-strength.medium .password-strength-bar {
+            background: var(--warning);
+            width: 60%;
+        }
+        
+        .password-strength.strong .password-strength-bar {
+            background: var(--success);
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="register-card">
+            <div class="register-header">
+                <h1>Rejoignez InternEasy</h1>
+                <p class="mb-0">Créez votre compte en quelques étapes</p>
+            </div>
+            
+            <div class="register-body">
+                <!-- Étapes de progression -->
+                <div class="progress-steps">
+                    <div class="step active" id="step1">
+                        <div class="step-number">1</div>
+                        <span class="step-label">Type de compte</span>
+                    </div>
+                    <div class="step" id="step2">
+                        <div class="step-number">2</div>
+                        <span class="step-label">Informations</span>
+                    </div>
+                    <div class="step" id="step3">
+                        <div class="step-number">3</div>
+                        <span class="step-label">Validation</span>
+                    </div>
+                </div>
+                
+                <!-- Formulaire en plusieurs étapes -->
+                <form id="registerForm" method="POST" action="/interneasy/backend/pages/register_ultimate.php">
+
+                    <!-- Champ caché pour le type d'utilisateur -->
+                    <input type="hidden" name="userType" id="userTypeInput" value="student">
+                    <!-- AJOUT: Champ caché pour code admin -->
+                    <input type="hidden" name="adminCode" id="adminCodeInput" value="">
+                    
+                    <!-- Étape 1: Type de compte -->
+                    <div class="form-section active" id="section1">
+                        <h3 class="mb-4">Choisissez votre type de compte</h3>
+                        
+                        <div class="user-type-selection">
+                            <div class="user-type-option active" data-type="student">
+                                <i class="bi bi-person-circle"></i>
+                                <h4>Étudiant</h4>
+                                <p>Je cherche un stage ou une alternance</p>
+                            </div>
+                            
+                            <div class="user-type-option" data-type="company">
+                                <i class="bi bi-building"></i>
+                                <h4>Entreprise</h4>
+                                <p>Je propose des stages et recrute des talents</p>
+                            </div>
+                            
+                            <!-- AJOUT: Option Admin -->
+                            <div class="user-type-option admin" data-type="admin">
+                                <i class="bi bi-shield-lock"></i>
+                                <h4>Administrateur</h4>
+                                <p>Gestion de la plateforme (code requis)</p>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <div></div> <!-- Espace vide à gauche -->
+                            <button type="button" class="btn-next" onclick="nextStep()">
+                                Suivant
+                                <i class="bi bi-arrow-right ms-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Étape 2: Informations -->
+                    <div class="form-section" id="section2">
+                        <h3 class="mb-4">Informations personnelles</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Prénom</label>
+                                <input type="text" class="form-control" name="firstName" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Nom</label>
+                                <input type="text" class="form-control" name="lastName" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Adresse email</label>
+                            <input type="email" class="form-control" name="email" required>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Mot de passe</label>
+                                <input type="password" class="form-control" name="password" required id="password">
+                                <div class="password-strength" id="passwordStrength">
+                                    <div class="password-strength-bar"></div>
+                                </div>
+                                <small class="text-muted">8 caractères minimum avec chiffres et lettres</small>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Confirmer le mot de passe</label>
+                                <input type="password" class="form-control" name="confirmPassword" required>
+                            </div>
+                        </div>
+                        
+                        <!-- Champs étudiants -->
+                        <div id="studentFields">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">École/Université</label>
+                                    <input type="text" class="form-control" name="school" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Niveau d'études</label>
+                                    <select class="form-control" name="educationLevel" required>
+                                        <option value="">Sélectionnez</option>
+                                        <option value="BAC+2">BAC+2</option>
+                                        <option value="BAC+3">BAC+3</option>
+                                        <option value="BAC+4">BAC+4</option>
+                                        <option value="BAC+5">BAC+5</option>
+                                        <option value="BAC+6 et plus">BAC+6 et plus</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Filière</label>
+                                <input type="text" class="form-control" name="fieldOfStudy" required>
+                            </div>
+                        </div>
+                        
+                        <!-- Champs entreprises -->
+                        <div id="companyFields" style="display: none;">
+                            <div class="form-group">
+                                <label class="form-label">Nom de l'entreprise</label>
+                                <input type="text" class="form-control" name="companyName">
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Secteur d'activité</label>
+                                    <select class="form-control" name="activitySector">
+                                        <option value="">Sélectionnez</option>
+                                        <option value="Technologie">Technologie</option>
+                                        <option value="Finance">Finance</option>
+                                        <option value="Commerce">Commerce</option>
+                                        <option value="Industrie">Industrie</option>
+                                        <option value="Services">Services</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Taille de l'entreprise</label>
+                                    <select class="form-control" name="companySize">
+                                        <option value="">Sélectionnez</option>
+                                        <option value="1-10 employés">1-10 employés</option>
+                                        <option value="11-50 employés">11-50 employés</option>
+                                        <option value="51-200 employés">51-200 employés</option>
+                                        <option value="200+ employés">200+ employés</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- Début des champs pour la carte -->
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Latitude (optionnel)</label>
+                                    <input type="number" name="latitude" class="form-control" 
+                                           step="0.00000001" min="-90" max="90"
+                                           placeholder="Ex: 33.573110">
+                                    <small class="text-muted">Pour apparaître sur la carte interactive</small>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Longitude (optionnel)</label>
+                                    <input type="number" name="longitude" class="form-control" 
+                                           step="0.00000001" min="-180" max="180"
+                                           placeholder="Ex: -7.589843">
+                                    <small class="text-muted">Pour apparaître sur la carte interactive</small>
+                                </div>
+                            </div>
+                            <!-- Fin des champs pour la carte -->
+                            
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" name="newsletter" id="newsletter">
+                                <label class="form-check-label" for="newsletter">
+                                    Je souhaite recevoir la newsletter
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- AJOUT: Champs Admin -->
+                        <div id="adminFields" style="display: none;">
+                            <div class="admin-fields">
+                                <h5 class="mb-3" style="color: #6f42c1;">
+                                    <i class="bi bi-shield-check me-2"></i>
+                                    Accès Administrateur
+                                </h5>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Code d'accès administrateur</label>
+                                    <input type="password" class="form-control admin-code-input" 
+                                           name="adminAccessCode" id="adminAccessCode"
+                                           placeholder="Entrez le code d'accès administrateur">
+                                    <small class="text-muted">
+                                        <i class="bi bi-info-circle me-1"></i>
+                                        Code requis pour la création de compte administrateur
+                                    </small>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Rôle spécifique</label>
+                                    <select class="form-control" name="adminRole">
+                                        <option value="super_admin">Super Administrateur</option>
+                                        <option value="content_admin">Administrateur Contenu</option>
+                                        <option value="moderator">Modérateur</option>
+                                        <option value="support_admin">Support Administratif</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="hasFullAccess" id="hasFullAccess">
+                                    <label class="form-check-label" for="hasFullAccess">
+                                        Accès complet à tous les modules
+                                    </label>
+                                </div>
+                                
+                                <div class="alert alert-info mt-3">
+                                    <small>
+                                        <i class="bi bi-key me-2"></i>
+                                        Les comptes administrateurs donnent accès au panneau de gestion de la plateforme.
+                                        Veuillez utiliser ce type de compte uniquement si vous êtes autorisé.
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-outline-secondary btn-prev" onclick="prevStep()">
+                                <i class="bi bi-arrow-left me-2"></i>
+                                Retour
+                            </button>
+                            <button type="button" class="btn-next" onclick="nextStep()">
+                                Suivant
+                                <i class="bi bi-arrow-right ms-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Étape 3: Validation -->
+                    <div class="form-section" id="section3">
+                        <h3 class="mb-4">Terminer l'inscription</h3>
+                        
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">Récapitulatif</h5>
+                                <div id="summaryContent">
+                                    <!-- Récapitulatif dynamique -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" required id="terms" name="terms">
+                                <label class="form-check-label" for="terms">
+                                    J'accepte les 
+                                    <a href="#" class="text-primary">conditions d'utilisation</a>
+                                     et la 
+                                    <a href="#" class="text-primary">politique de confidentialité</a>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="newsletter" name="newsletter" value="1">
+                                <label class="form-check-label" for="newsletter">
+                                    Je souhaite recevoir les actualités et offres spéciales par email
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn-submit">
+                            Créer mon compte
+                        </button>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-outline-secondary btn-prev" onclick="prevStep()">
+                                <i class="bi bi-arrow-left me-2"></i>
+                                Retour
+                            </button>
+                            <div></div> <!-- Espace vide à droite -->
+                        </div>
+                    </div>
+                </form>
+                
+                <div class="register-footer">
+                    <p class="text-muted">
+                        Déjà inscrit ? 
+                        <a href="login.html">Connectez-vous</a>
+                    </p>
+                    <small class="text-muted">
+                        © 2024 InternEasy • Votre carrière commence ici
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let currentStep = 1;
+        let userType = 'student';
+        
+        // ✅ FONCTION pour gérer les champs requis
+        function updateRequiredFields() {
+            console.log('Mise à jour champs requis pour:', userType);
+            
+            if (userType === 'student') {
+                // Étudiants requis, autres non
+                document.querySelectorAll('#studentFields [required]').forEach(field => {
+                    field.required = true;
+                });
+                document.querySelectorAll('#companyFields [required]').forEach(field => {
+                    field.required = false;
+                });
+                document.querySelectorAll('#adminFields [required]').forEach(field => {
+                    field.required = false;
+                });
+            } else if (userType === 'company') {
+                // Entreprises requis, autres non
+                document.querySelectorAll('#studentFields [required]').forEach(field => {
+                    field.required = false;
+                });
+                document.querySelectorAll('#companyFields [required]').forEach(field => {
+                    field.required = true;
+                });
+                document.querySelectorAll('#adminFields [required]').forEach(field => {
+                    field.required = false;
+                });
+            } else if (userType === 'admin') {
+                // Admin requis, autres non
+                document.querySelectorAll('#studentFields [required]').forEach(field => {
+                    field.required = false;
+                });
+                document.querySelectorAll('#companyFields [required]').forEach(field => {
+                    field.required = false;
+                });
+                document.querySelectorAll('#adminFields [required]').forEach(field => {
+                    field.required = true;
+                });
+            }
+        }
+        
+        // ✅ INITIALISATION
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('=== PAGE CHARGÉE ===');
+            
+            // Détecter type initial
+            const activeElement = document.querySelector('.user-type-option.active');
+            if (activeElement) {
+                userType = activeElement.dataset.type;
+            }
+            
+            document.getElementById('userTypeInput').value = userType;
+            
+            // Afficher/masquer champs selon type
+            updateFieldVisibility();
+            
+            // Mettre à jour les champs requis
+            updateRequiredFields();
+        });
+        
+        // ✅ FONCTION pour afficher/masquer champs
+        function updateFieldVisibility() {
+            // Masquer tout d'abord
+            document.getElementById('studentFields').style.display = 'none';
+            document.getElementById('companyFields').style.display = 'none';
+            document.getElementById('adminFields').style.display = 'none';
+            
+            // Afficher selon le type
+            if (userType === 'student') {
+                document.getElementById('studentFields').style.display = 'block';
+            } else if (userType === 'company') {
+                document.getElementById('companyFields').style.display = 'block';
+            } else if (userType === 'admin') {
+                document.getElementById('adminFields').style.display = 'block';
+            }
+        }
+        
+        // ✅ CLIC SUR LES OPTIONS
+        document.querySelectorAll('.user-type-option').forEach(option => {
+            option.addEventListener('click', function() {
+                console.log('=== CLIC SUR:', this.dataset.type);
+                
+                // Visuel
+                document.querySelectorAll('.user-type-option').forEach(opt => {
+                    opt.classList.remove('active');
+                });
+                this.classList.add('active');
+                
+                // Mettre à jour
+                userType = this.dataset.type;
+                document.getElementById('userTypeInput').value = userType;
+                
+                // Afficher/masquer champs
+                updateFieldVisibility();
+                
+                // Mettre à jour les champs requis
+                updateRequiredFields();
+            });
+        });
+        
+        // ✅ NAVIGATION - CORRIGÉE
+        function nextStep() {
+            console.log('nextStep appelé, étape actuelle:', currentStep);
+            
+            // Validation spécifique pour admin
+            if (currentStep === 2 && userType === 'admin') {
+                const adminCode = document.getElementById('adminAccessCode').value;
+                if (!adminCode.trim()) {
+                    alert('Veuillez entrer le code d\'accès administrateur.');
+                    return;
+                }
+                
+                // Vérifier le code (exemple: "ADMIN2024")
+                if (adminCode !== 'ADMIN2024') { // À remplacer par votre logique réelle
+                    alert('Code administrateur incorrect.');
+                    return;
+                }
+                
+                // Stocker le code validé
+                document.getElementById('adminCodeInput').value = adminCode;
+            }
+            
+            if (currentStep < 3) {
+                // Cacher étape actuelle
+                const currentSection = document.getElementById('section' + currentStep);
+                const currentStepEl = document.getElementById('step' + currentStep);
+                
+                if (currentSection) currentSection.classList.remove('active');
+                if (currentStepEl) {
+                    currentStepEl.classList.remove('active');
+                    currentStepEl.classList.add('completed');
+                }
+                
+                // Passer à l'étape suivante
+                currentStep++;
+                
+                // Afficher nouvelle étape
+                const nextSection = document.getElementById('section' + currentStep);
+                const nextStepEl = document.getElementById('step' + currentStep);
+                
+                if (nextSection) nextSection.classList.add('active');
+                if (nextStepEl) nextStepEl.classList.add('active');
+                
+                // Récapitulatif
+                if (currentStep === 3) {
+                    updateSummary();
+                }
+            }
+        }
+        
+        function prevStep() {
+            console.log('prevStep appelé, étape actuelle:', currentStep);
+            
+            if (currentStep > 1) {
+                // Cacher étape actuelle
+                const currentSection = document.getElementById('section' + currentStep);
+                const currentStepEl = document.getElementById('step' + currentStep);
+                
+                if (currentSection) currentSection.classList.remove('active');
+                if (currentStepEl) {
+                    currentStepEl.classList.remove('active');
+                    currentStepEl.classList.remove('completed');
+                }
+                
+                // Revenir à l'étape précédente
+                currentStep--;
+                
+                // Afficher étape précédente
+                const prevSection = document.getElementById('section' + currentStep);
+                const prevStepEl = document.getElementById('step' + currentStep);
+                
+                if (prevSection) prevSection.classList.add('active');
+                if (prevStepEl) prevStepEl.classList.add('active');
+            }
+        }
+        
+        // Force mot de passe
+        document.getElementById('password').addEventListener('input', function(e) {
+            const password = e.target.value;
+            const strengthBar = document.getElementById('passwordStrength');
+            
+            let strength = 'weak';
+            if (password.length >= 8 && /[A-Z]/.test(password) && /[0-9]/.test(password)) {
+                strength = 'strong';
+            } else if (password.length >= 6) {
+                strength = 'medium';
+            }
+            
+            strengthBar.className = 'password-strength ' + strength;
+        });
+        
+        // Récapitulatif
+        function updateSummary() {
+            const summary = document.getElementById('summaryContent');
+            let typeText = '';
+            
+            if (userType === 'student') {
+                typeText = 'Étudiant';
+            } else if (userType === 'company') {
+                typeText = 'Entreprise';
+            } else if (userType === 'admin') {
+                typeText = 'Administrateur';
+            }
+            
+            let summaryHTML = `
+                <p><strong>Type de compte:</strong> ${typeText}</p>
+                <p><strong>Nom:</strong> ${document.querySelector('input[name="firstName"]').value} ${document.querySelector('input[name="lastName"]').value}</p>
+                <p><strong>Email:</strong> ${document.querySelector('input[name="email"]').value}</p>
+            `;
+            
+            if (userType === 'student') {
+                summaryHTML += `
+                    <p><strong>École:</strong> ${document.querySelector('input[name="school"]').value}</p>
+                    <p><strong>Niveau:</strong> ${document.querySelector('select[name="educationLevel"]').value}</p>
+                `;
+            } else if (userType === 'company') {
+                summaryHTML += `
+                    <p><strong>Entreprise:</strong> ${document.querySelector('input[name="companyName"]').value}</p>
+                    <p><strong>Secteur:</strong> ${document.querySelector('select[name="activitySector"]').value}</p>
+                `;
+            } else if (userType === 'admin') {
+                summaryHTML += `
+                    <p><strong>Rôle:</strong> ${document.querySelector('select[name="adminRole"]').value}</p>
+                    <p><strong>Accès complet:</strong> ${document.querySelector('#hasFullAccess').checked ? 'Oui' : 'Non'}</p>
+                `;
+            }
+            
+            summary.innerHTML = summaryHTML;
+        }
+        
+        // ✅ FORMULAIRE - CORRIGÉ
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            console.log('=== TENTATIVE SOUMISSION ===');
+            console.log('Type:', userType);
+            console.log('Champ hidden:', document.getElementById('userTypeInput').value);
+            
+            // Validation mots de passe
+            const password = document.querySelector('input[name="password"]').value;
+            const confirmPassword = document.querySelector('input[name="confirmPassword"]').value;
+            
+            if (password !== confirmPassword) {
+                e.preventDefault();
+                alert('❌ Mots de passe différents');
+                return false;
+            }
+            
+            // ✅ Validation spécifique admin
+            if (userType === 'admin') {
+                const adminCode = document.getElementById('adminAccessCode').value;
+                if (!adminCode.trim()) {
+                    e.preventDefault();
+                    alert('❌ Code administrateur requis.');
+                    return false;
+                }
+                
+                // Vérification du code (à adapter avec votre logique backend)
+                if (adminCode !== 'ADMIN2024') {
+                    e.preventDefault();
+                    alert('❌ Code administrateur incorrect.');
+                    return false;
+                }
+            }
+            
+            // ✅ IMPORTANT : Enlever required des champs non utilisés
+            ['student', 'company', 'admin'].forEach(type => {
+                if (userType !== type) {
+                    document.querySelectorAll(`#${type}Fields [required]`).forEach(field => {
+                        field.required = false;
+                    });
+                }
+            });
+            
+            console.log('✅ Soumission autorisée');
+            return true;
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+# Activer l'affichage des erreurs PHP
+php_flag display_errors on
+php_value error_reporting E_ALL
+
+# Désactiver la mise en cache
+Header set Cache-Control "no-cache, no-store, must-revalidate"
+Header set Pragma "no-cache"
+Header set Expires 0
