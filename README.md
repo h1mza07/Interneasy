@@ -18,7 +18,7 @@ Le projet est développé par **un binôme**, selon une approche **MVP**, avec P
 ## Utilisateurs
 - **Étudiant** : profil, recherche d’offres, candidature, CV PDF
 - **Entreprise** : publication d’offres, gestion des candidatures
-- **Administrateur** : validation des entreprises, gestion globale
+- **Administrateur** : validation des entreprises, gestion globale "pour acceder vous aurez besoin d'un Code d’accès administrateur": ADMIN2024
 
 ---
 
