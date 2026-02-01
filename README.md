@@ -57,14 +57,14 @@ C:\xampp\htdocs\internEasy\
 
 ## Organisation du travail (Binôme)
 
-### Binôme 1: Amina Chetti - Backend
+### Binôme 1: Amina Chetti  (Backend)
 - Base de données
 - Connexion PHP/MySQL
 - Authentification & rôles
 - Modules : Offres, Candidatures, Admin
 - Sécurité (hash, sessions, requêtes préparées)
 
-### Binôme 2 — Hamza Layachi - Frontend
+### Binôme 2 : Hamza Layachi (Frontend)
 - Pages principales
 - Intégration Bootstrap
 - Dashboards par rôle
