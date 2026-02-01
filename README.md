@@ -1,5 +1,5 @@
 
-# InternEasy — README
+# InternEasy (README)
 
 ## Présentation
 **InternEasy** est une application web académique destinée à faciliter la recherche de stages pour les étudiants et la gestion des offres pour les entreprises.  
